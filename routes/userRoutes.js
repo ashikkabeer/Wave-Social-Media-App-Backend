@@ -7,10 +7,8 @@ const { SignUp, Login, userInfo } = require("../controllers/userControl");
 
 function isAuthenticated(req, res, next) {
   if (req.session && req.session.user) {
-    // User is authenticated, proceed to the next middleware or route handler
     return next();
   }
-  // User is not authenticated, redirect to the login page or send an error response
   res.redirect("/login");
 }
 
@@ -19,6 +17,7 @@ router.post("/login", async (req, res, next) => {
     const sessionUser = await Login(req);
     if (sessionUser) {
       res.status(200).redirect("/");
+      // res.status(200).json({message: 'LoggedIn'});
     } else {
       res.status(401).json({ error: 'Authentication failed' });
     }
@@ -35,7 +34,7 @@ router.get("/logout", (req, res) => {
 });
 
 
-router.post("/signup", async (req, res, next) => {
+router.post("/signup", async (req, res) => {
   try {
     const userData = req.body;
     console.log(userData);

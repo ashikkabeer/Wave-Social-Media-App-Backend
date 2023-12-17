@@ -1,6 +1,6 @@
-const College = require("../schema/college");
-const {User} = require("../schema/user")
-const mongoose = require('mongoose')
+const College = require('../schema/college');
+const { User } = require('../schema/user');
+const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const addCollege = async (collegeData) => {
   try {
@@ -13,7 +13,7 @@ const addCollege = async (collegeData) => {
 
 const updateStudents = async (collegeId, studentsId) => {
   try {
-    console.log('updating')
+    console.log('updating');
     await College.findByIdAndUpdate(collegeId, {
       $push: { studentIds: studentsId },
     });

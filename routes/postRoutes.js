@@ -19,32 +19,32 @@ function isAuthenticated(req, res, next) {
   res.redirect("/login");
 }
 
-  router.post("/post", isAuthenticated, multer.single("image"), async (req, res, next) => {
-    try {
-      if (!req.session || !req.session.user || !req.session.user._id) {
-        return res.status(401).json({ error: 'User not authenticated' });
-      }
-      if (!req.body.title || !req.body.content) {
-        return res.status(400).json({ error: 'Title and content are required' });
-      }
-      let tweetData = {
-        title: req.body.title,
-        content: req.body.content,
-        author: req.session.user._id,
-      };
-
-      if (req.file) {
-        const imageUrl = await uploadImagetoCloud(req.file.buffer);
-        tweetData.images = imageUrl;
-      }
-      const response = await CreatePosts(tweetData);
-      res.sendStatus(201).json({ message: 'Operation successful', data: response });
-
-    } catch (error) {
-      console.log(error);
-      return res.sendStatus(500).json({ error: 'Internal server error' });
+router.post("/post", isAuthenticated, multer.single("image"), async (req, res,next) => {
+  try {
+    if (!req.session || !req.session.user || !req.session.user._id) {
+      return res.status(401).json({ error: 'User not authenticated' });
     }
-  });
+    if (!req.body.title || !req.body.content) {
+      return res.status(400).json({ error: 'Title and content are required' });
+    }
+    let tweetData = {
+      title: req.body.title,
+      content: req.body.content,
+      author: req.session.user._id,
+    };
+
+    if (req.file) {
+      const imageUrl = await uploadImagetoCloud(req.file.buffer);
+      tweetData.images = imageUrl;
+    }
+    const response = await CreatePosts(tweetData);
+    return res.status(201).json({ message: 'Operation successful', data: response });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
 router.get('/', isAuthenticated, async (req, res, next) => {
   try {
     const data = await getAllPosts();
