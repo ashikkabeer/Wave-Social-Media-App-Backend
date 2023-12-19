@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-// Define the College schema
+
 const collegeSchema = new Schema({
   Collegename: {
     type: String,

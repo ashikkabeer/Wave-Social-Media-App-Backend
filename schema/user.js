@@ -2,6 +2,10 @@ const { Schema, model } = require("mongoose");
 //checking the changes
 //Schema for the user
 const userSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
   username: {
     type: String,
     required: true,
@@ -35,6 +39,12 @@ const userSchema = new Schema({
     enum: ["male", "female", "other"],
     required: true,
   },
+  friends: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User" 
+    }
+  ],
   posts: [
     {
       type: Schema.Types.ObjectId,
@@ -66,6 +76,14 @@ const postSchema = new Schema({
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",
+    required: true,
+  },
+  authorName: {
+    type: String,
+    required: true,
+  },
+  authorCollege: {
+    type: String,
     required: true,
   },
   upvotes: {

@@ -10,6 +10,7 @@ var usersRouter = require("./routes/userRoutes");
 var postRouter = require("./routes/postRoutes");
 var collegeRouter = require("./routes/collegeRoutes");
 
+
 var app = express();
 const connect = require("./db/connect");
 require("dotenv").config();
@@ -25,6 +26,11 @@ app.use(
     resave: false,
   })
 );
+const exphbs = require('express-handlebars');
+app.engine('hbs', exphbs.create({
+  defaultLayout: 'main',
+  extname: '.hbs',
+}).engine);
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");

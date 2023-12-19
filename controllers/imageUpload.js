@@ -1,23 +1,5 @@
 
-const { v4: uuidv4 } = require("uuid"); // Import the uuid package
-const Multer = require("multer");
-const { Storage } = require("@google-cloud/storage");
-const multer = Multer({
-  storage: Multer.memoryStorage(),
-  limits: {
-    fileSize: 1024 * 1024 * 5, // 5 MB
-  },
-});
 
-let projectId = "fit-legacy-399206";
-let keyFilename = "mykeys.json";
-
-const storage = new Storage({
-  projectId,
-  keyFilename,
-});
-
-const bucket = storage.bucket("wave_first_project");
 
 
 
