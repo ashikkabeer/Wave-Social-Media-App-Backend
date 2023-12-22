@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Login V2</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		.center {
+			margin: auto;
+			width: 50%;
+			padding: 10px;
+			margin-top: auto;
+		}
+	</style>
+</head>
+
+<body>
+	{{!-- ----------------------------------- --}}
+<div class="center">
+		<form action="/login" method="POST">
+		<div class="mb-3 ">
+			<label for="username" class="form-label">usernames</label>
+			<input type="text" name="username" class="form-control" id="username" aria-describedby="emailHelp">
+		</div>
+		<div class="mb-3">
+			<label for="exampleInputPassword1" class="form-label">Password</label>
+			<input name="password" type="password" class="form-control" id="exampleInputPassword1">
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+	<div>
+		<span>
+			Don’t have an account?
+		</span>
+
+		<a href=" /signup">
+			Sign Up
+			</a>
+	</div>
+</div>
+	{{!-- ----------------------------------------------- --}}
+
+
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
