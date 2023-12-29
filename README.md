@@ -1,4 +1,4 @@
-# Social Media App for Students
+# Wave: Social Media App for Students
 ### [Link to Documentation](https://ashikkabeer.notion.site/Social-Media-App-Documentaion-bddbf5b9377043b8b81a3e7dccb8e526)
 
 
@@ -25,10 +25,10 @@ Before setting up this app, ensure you have the following installed:
 
 ```bash
 # Clone the repository to your local machine
-git clone https://github.com/ashikkabeer/Social-Media-App-Backend.git
+git clone https://github.com/ashikkabeer/Wave-Social-Media-App-Backend.git
 
 # Change directory to the project folder
-cd Social-Media-App-Backend
+cd Wave-Social-Media-App-Backend
 
 # Install dependencies
 npm install
