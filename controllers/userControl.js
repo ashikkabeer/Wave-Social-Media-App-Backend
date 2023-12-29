@@ -1,16 +1,19 @@
-const util = require('util');
 const { User } = require('../schema/user');
-const { updateStudents } = require('./collegeControl');
-const session = require('express-session');
 const College = require('../schema/college');
 const { extractDate } = require('../helpers/timeConvertHelper');
-const { hashPassword, comparePassword } = require('../helpers/hashingHelper');
+const { comparePassword } = require('../helpers/hashingHelper');
 const bcrypt = require('bcrypt');
+let collegeControl = require("./collegeControl");
+
+collegeControl = new collegeControl();
 
 class UserControls {
   constructor() {
     this.signUp = this.signUp.bind(this);
     this.login = this.login.bind(this);
+    this.renderSignup = this.renderSignup.bind(this);
+    this.renderLogin = this.renderLogin.bind(this);
+    this.updateUserPost = this.updatePostList.bind(this);
   }
   async login(req, res) {
     try {
@@ -28,9 +31,8 @@ class UserControls {
       }
       req.session.user = foundUser;
       req.session.loggedIn = true;
-      console.log(foundUser);
       if (req.session) {
-        res.status(200).redirect('/');
+        res.status(200).redirect('/post');
       } else {
         res.status(401).json({ error: 'Authentication failed' });
       }
@@ -45,19 +47,17 @@ class UserControls {
       const hashedPassword = await bcrypt.hash(userData.password, 10);
 
       const user = await User.create({
+        name:userData.name,
         username: userData.username,
         password: hashedPassword,
         email: userData.email,
         collegeName: userData.collegeName,
         gender: userData.gender,
       });
-      await updateStudents(userData.collegeName, user._id);
-      // .then(async (data) => {
-      //   await updateStudents(data.collegeName, data._id);
-      // });
       if (!user) {
         res.status(401).send('Failed to sign up');
       }
+      await collegeControl.updateColleges(userData.collegeName, user._id);
       res.status(200).send('Sign-up successful');
     } catch (error) {
       console.error('signUp error:', error);
@@ -65,18 +65,19 @@ class UserControls {
     }
   }
 
-  // async getCollegeNames(req, res) {
-  //   try {
-  //     const college = await College.find({});
-  //     res.send(college);
-  //   } catch (error) {
-  //     console.error('Error fetching college names:', error);
-  //     throw new Error('Failed to fetch college names: ' + error.message);
-  //   }
-  // }
   async renderSignup(req, res) {
     try {
-      const college = await College.find({});
+      const colleges = await College.find({}).exec();
+      const college = await Promise.all(
+        colleges.map(async (college) => {
+          return {
+            _id: college._id,
+            Collegename: college.Collegename,
+            location:college.location,
+          };
+        })
+      );
+      console.log(college)
       res.render('signup', { college });
     } catch (error) {
       console.error('Error rendering signup:', error);
@@ -92,7 +93,7 @@ class UserControls {
     }
   }
 
-  async updateUserPost(authorId, tweetDataId) {
+  async updatePostList(authorId, tweetDataId) {
     try {
       await User.findByIdAndUpdate(authorId, {
         $push: { posts: tweetDataId },

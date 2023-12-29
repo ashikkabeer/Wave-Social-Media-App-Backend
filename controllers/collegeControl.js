@@ -3,7 +3,8 @@ const College = require('../schema/college');
  class CollegeControls {
   constructor() {
     this.addCollege = this.addCollege.bind(this);
-    this.updateStudents = this.updateStudents.bind(this);
+    this.updateStudents = this.updateColleges.bind(this);
+    this.renderAddColleges = this.renderAddColleges.bind(this);
   }
   async addCollege(req,res) {
     try {
@@ -15,7 +16,7 @@ const College = require('../schema/college');
         res.status(200).json({ message: 'Operation successful', data: college });
     }
     } catch (error) {
-      throw new Error('Failed to add college: ' + error.message);
+      console.log(error)
     }
   }
 
@@ -28,7 +29,7 @@ const College = require('../schema/college');
     }
   }
 
-  async updateStudents(collegeId, studentsId) {
+  async updateColleges(collegeId, studentsId) {
     try {
       console.log('updating');
       await College.findByIdAndUpdate(collegeId, {

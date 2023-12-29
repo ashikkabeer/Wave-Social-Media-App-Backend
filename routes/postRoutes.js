@@ -1,7 +1,5 @@
 var express = require("express");
 var router = express.Router();
-const uploadImagetoCloud = require("../controllers/imageUpload");
-const { MongoError } = require("mongodb");
 const Multer = require("multer");
 let PostControls  = require("../controllers/postControl");
 const authMiddlewares = require("../middlewares/middlewares");

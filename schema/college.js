@@ -44,4 +44,4 @@ const collegeSchema = new Schema({
 
 // Create the College model
 const College = model("College", collegeSchema);
-module.exports = College;
+module.exports = College

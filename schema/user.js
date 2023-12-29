@@ -4,7 +4,7 @@ const { Schema, model } = require("mongoose");
 const userSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    // required: true,
   },
   username: {
     type: String,
@@ -60,80 +60,11 @@ const userSchema = new Schema({
     default: Date.now,
   },
 });
-// Schemas for post
-const postSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  content: {
-    type: String,
-    required: true,
-  },
-  images:{
-    type: String
-  },
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  authorName: {
-    type: String,
-    required: true,
-  },
-  authorCollege: {
-    type: String,
-    required: true,
-  },
-  upvotes: {
-    type: Number,
-    default: 0,
-  },
-  views: {
-    type: Number,
-    default: 0,
-  },
-  comments: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Comment",
-    },
-  ],
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
 
-// Schema for the comment on the post
-const commentSchema = new Schema({
-  content: {
-    type: String,
-    required: true,
-  },
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  post: {
-    type: Schema.Types.ObjectId,
-    ref: "Post",
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
 
-const Comment = model("Comment", commentSchema);
-const Post = model("Post", postSchema);
+
 const User = model("User", userSchema);
 
 module.exports = {
   User,
-  Post,
-  Comment,
 };

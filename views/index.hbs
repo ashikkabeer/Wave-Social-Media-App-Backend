@@ -13,7 +13,6 @@
             flex-wrap: wrap;
             justify-content: center;
         }
-
         .card {
             margin: 10px;
         }
@@ -25,8 +24,10 @@
     <section>
         <div class="container text-center cards">
             {{#each data}}
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="{{image}}  " alt="Card image cap">
+            <div class="card" style="max-width: 18rem;">
+                <div class="ratio ratio-1x1">
+                    <img class="card-img-top" src="{{image}}" alt="Card image cap">
+                </div>
                 <div class="card-body">
                     <h5 class="card-title">{{title}}</h5>
                     <p class="card-text">{{content}}</p>
@@ -36,7 +37,6 @@
                 </div>
             </div>
             {{/each}}
-
         </div>
     </section>
 

@@ -1,24 +1,34 @@
 const { updateUserPost } = require('./userControl');
-const { Post } = require('../schema/user');
+const {User}  = require('../schema/user');
+let UserControls = require('./userControl')
+const Post = require('../schema/post');
 const { v4: uuidv4 } = require('uuid');
 const Multer = require('multer');
 const { Storage } = require('@google-cloud/storage');
+
+UserControls = new UserControls()
 
 class PostControls {
   constructor() {
     this.create = this.create.bind(this);
     this.retrieveAll = this.retrieveAll.bind(this);
+    this.renderUploadForm = this.renderUploadForm.bind(this);
+    this.uploadImagetoCloud = this.uploadImagetoCloud.bind(this);
+    this.renderProfilePhotoForm = this.renderProfilePhotoForm.bind(this);
   }
   async renderUploadForm(req, res) {
     try {
       res.render('addPost');
     } catch (error) {
       console.error('Error rendering "addPost" view:', error);
-      res.sendStatus(500).send('An error occurred while rendering the "addPost" view.');
+      res
+        .sendStatus(500)
+        .send('An error occurred while rendering the "addPost" view.');
     }
   }
   async create(req, res) {
     try {
+      console.log('im in create')
       if (!req.session || !req.session.user || !req.session.user._id) {
         return res.status(401).json({ error: 'User not authenticated' });
       }
@@ -27,21 +37,29 @@ class PostControls {
           .status(400)
           .json({ error: 'Title and content are required' });
       }
+      const authorId = req.session.user._id;
+      const author = await User.findById(authorId);
       let data = {
         title: req.body.title,
         content: req.body.content,
         author: req.session.user._id,
+        authorName: author.username,
+        authorCollege: author.collegeName
+
       };
       if (req.file) {
+        console.log('image found')
         const imageUrl = await this.uploadImagetoCloud(req.file.buffer);
+
         data.images = imageUrl;
       }
       const post = await Post.create(data);
-      await updateUserPost(post.author, post._id);
+      await UserControls.updatePostList(post.author, post._id);
       return res
         .status(201)
         .json({ message: 'Operation successful', data: post });
     } catch (error) {
+      console.log(error)
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
@@ -76,6 +94,7 @@ class PostControls {
         })
       );
       const data = formattedPosts.filter((post) => post !== null);
+      console.log(data)
       res.render('index', { data });
     } catch (error) {
       console.error('Error:', error);
@@ -83,6 +102,7 @@ class PostControls {
     }
   }
   async uploadImagetoCloud(buffer) {
+    console.log('uploading')
     const multer = Multer({
       storage: Multer.memoryStorage(),
       limits: {
