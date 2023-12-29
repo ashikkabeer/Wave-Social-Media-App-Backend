@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/login', UserControls.login);
-router.get('/login', authMiddlewares.isAuthenticated, UserControls.renderLogin);
+router.get('/login', UserControls.renderLogin);
 
 router.post('/signup', UserControls.signUp);
 router.get('/signup', UserControls.renderSignup);

@@ -3,7 +3,7 @@ const College = require('../schema/college');
 const { extractDate } = require('../helpers/timeConvertHelper');
 const { comparePassword } = require('../helpers/hashingHelper');
 const bcrypt = require('bcrypt');
-let collegeControl = require("./collegeControl");
+let collegeControl = require('./collegeControl');
 
 collegeControl = new collegeControl();
 
@@ -27,7 +27,7 @@ class UserControls {
         foundUser.password
       );
       if (!passwordMatch) {
-        throw new Error('Wrong password');
+        return res.send('<h1>password not matched - login again </h1>');
       }
       req.session.user = foundUser;
       req.session.loggedIn = true;
@@ -38,7 +38,6 @@ class UserControls {
       }
     } catch (error) {
       console.error('Login error:', error.message);
-      throw new Error('Login failed: ' + error.message);
     }
   }
   async signUp(req, res) {
@@ -47,7 +46,7 @@ class UserControls {
       const hashedPassword = await bcrypt.hash(userData.password, 10);
 
       const user = await User.create({
-        name:userData.name,
+        name: userData.name,
         username: userData.username,
         password: hashedPassword,
         email: userData.email,
@@ -58,7 +57,7 @@ class UserControls {
         res.status(401).send('Failed to sign up');
       }
       await collegeControl.updateColleges(userData.collegeName, user._id);
-      res.status(200).send('Sign-up successful');
+      res.status(200).redirect('/');
     } catch (error) {
       console.error('signUp error:', error);
       throw new Error('Failed to sign up: ' + error.message);
@@ -73,11 +72,11 @@ class UserControls {
           return {
             _id: college._id,
             Collegename: college.Collegename,
-            location:college.location,
+            location: college.location,
           };
         })
       );
-      console.log(college)
+      console.log(college);
       res.render('signup', { college });
     } catch (error) {
       console.error('Error rendering signup:', error);

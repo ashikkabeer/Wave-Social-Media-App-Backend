@@ -55,9 +55,8 @@ class PostControls {
       }
       const post = await Post.create(data);
       await UserControls.updatePostList(post.author, post._id);
-      return res
-        .status(201)
-        .json({ message: 'Operation successful', data: post });
+      return res.status(200).redirect('/');
+      
     } catch (error) {
       console.log(error)
       return res.status(500).json({ error: 'Internal server error' });
