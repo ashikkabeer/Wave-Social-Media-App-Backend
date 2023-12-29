@@ -2,7 +2,9 @@
 ### [Link to Documentation](https://ashikkabeer.notion.site/Social-Media-App-Documentaion-bddbf5b9377043b8b81a3e7dccb8e526)
 
 
-### [Live](http://studentsocials-env.eba-vcmmdpxm.eu-north-1.elasticbeanstalk.com/)
+### [Live Link](http://studentsocials-env.eba-vcmmdpxm.eu-north-1.elasticbeanstalk.com/)
+![gif](https://media.giphy.com/media/l1J9IFcDSYcAeHH5m/giphy.gif)
+
 ## Description
 
 It is a social media platform designed exclusively for students. It offers a space for students to connect, share information, and engage in discussions related to their colleges and academic interests. This Node.js backend-focused project powers the core functionality of this app.
