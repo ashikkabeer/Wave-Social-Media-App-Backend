@@ -1,12 +1,12 @@
 const { updateUserPost } = require('./userControl');
-const {User}  = require('../schema/user');
-let UserControls = require('./userControl')
-const Post = require('../schema/post');
+const { User } = require('../model/user');
+let UserControls = require('./userControl');
+const Post = require('../model/post');
 const { v4: uuidv4 } = require('uuid');
 const Multer = require('multer');
 const { Storage } = require('@google-cloud/storage');
 
-UserControls = new UserControls()
+UserControls = new UserControls();
 
 class PostControls {
   constructor() {
@@ -17,91 +17,64 @@ class PostControls {
     this.renderProfilePhotoForm = this.renderProfilePhotoForm.bind(this);
   }
   async renderUploadForm(req, res) {
-    try {
-      res.render('addPost');
-    } catch (error) {
-      console.error('Error rendering "addPost" view:', error);
-      res
-        .sendStatus(500)
-        .send('An error occurred while rendering the "addPost" view.');
-    }
+    res.render('addPost');
   }
   async create(req, res) {
-    try {
-      console.log('im in create')
-      if (!req.session || !req.session.user || !req.session.user._id) {
-        return res.status(401).json({ error: 'User not authenticated' });
-      }
-      if (!req.body.title || !req.body.content) {
-        return res
-          .status(400)
-          .json({ error: 'Title and content are required' });
-      }
-      const authorId = req.session.user._id;
-      const author = await User.findById(authorId);
-      let data = {
-        title: req.body.title,
-        content: req.body.content,
-        author: req.session.user._id,
-        authorName: author.username,
-        authorCollege: author.collegeName
-
-      };
-      if (req.file) {
-        console.log('image found')
-        const imageUrl = await this.uploadImagetoCloud(req.file.buffer);
-
-        data.images = imageUrl;
-      }
-      const post = await Post.create(data);
-      await UserControls.updatePostList(post.author, post._id);
-      return res.status(200).redirect('/');
-      
-    } catch (error) {
-      console.log(error)
-      return res.status(500).json({ error: 'Internal server error' });
+    if (!req.session || !req.session.user || !req.session.user._id) {
+      throw new Error('user not authenticated');
     }
+    if (!req.body.title || !req.body.content) {
+      throw new Error('Title and content are required');
+    }
+    const authorId = req.session.user._id;
+    const author = await User.findById(authorId);
+    let data = {
+      title: req.body.title,
+      content: req.body.content,
+      author: req.session.user._id,
+      authorName: author.username,
+      authorCollege: author.collegeName,
+    };
+    if (req.file) {
+      console.log('image found');
+      const imageUrl = await this.uploadImagetoCloud(req.file.buffer);
+
+      data.images = imageUrl;
+    }
+    const post = await Post.create(data);
+    await UserControls.updatePostList(post.author, post._id);
+    return res.status(200).redirect('/');
   }
 
   async renderProfilePhotoForm(req, res) {
-    try {
-      res.render('imageUpload');
-    } catch (error) {
-      console.error('Error rendering "imageUpload" view:', error);
-      res
-        .sendStatus(500)
-        .send('An error occurred while rendering the "imageUpload" view.');
-    }
+    res.render('imageUpload');
   }
   // add the user data in the post schema
   async retrieveAll(req, res) {
-    try {
-      const posts = await Post.find({}).exec();
-      const formattedPosts = await Promise.all(
-        posts.map(async (post) => {
-          return {
-            title: post.title,
-            content: post.content,
-            image: post.images,
-            author: post.author,
-            authorName: post.authorName,
-            authorCollege: post.authorCollege,
-            upvotes: post.upvotes,
-            views: post.views,
-            date: post.createdAt,
-          };
-        })
-      );
-      const data = formattedPosts.filter((post) => post !== null);
-      console.log(data)
-      res.render('index', { data });
-    } catch (error) {
-      console.error('Error:', error);
-      res.sendStatus(500).send('An error occurred while fetching posts.');
+    const posts = await Post.find({}).exec();
+    if (!posts) {
+      throw new Error('Unable to retrieve data');
     }
+    const formattedPosts = await Promise.all(
+      posts.map(async (post) => {
+        return {
+          title: post.title,
+          content: post.content,
+          image: post.images,
+          author: post.author,
+          authorName: post.authorName,
+          authorCollege: post.authorCollege,
+          upvotes: post.upvotes,
+          views: post.views,
+          date: post.createdAt,
+        };
+      })
+    );
+    const data = formattedPosts.filter((post) => post !== null);
+    res.render('index', { data });
   }
   async uploadImagetoCloud(buffer) {
-    console.log('uploading')
+    console.log('uploading');
     const multer = Multer({
       storage: Multer.memoryStorage(),
       limits: {
