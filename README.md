@@ -19,7 +19,7 @@ It is a social media platform designed exclusively for students. It offers a spa
 ### Prerequisites
 Before setting up this app, ensure you have the following installed:
 
-1. Node.js v20.1.0 and npm (Node Package Manager)
+1. Node.js and npm (Node Package Manager)
 2. MongoDB Database
 3. Git (optional, but recommended)
 
