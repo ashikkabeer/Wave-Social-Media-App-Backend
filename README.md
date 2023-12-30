@@ -74,37 +74,60 @@ Explain the organization of your project's source code. Describe the purpose of 
 ```
 - /src
   - /controllers
+    - authControl.js 
     - collegeControl.js
     - imageUpload.js
     - postControl.js
     - userControl.js
-  - /db
-    -connect.js
-  - /schema
+  - /config
+    -db.js
+  - /model
     - college.js
+    - message.js
+    - post.js
     - user.js
   - /routes
+    - authRoutes.js
     - collegeRoutes.js
     - index.js
     - postRoutes.js
     - userRoutes.js
+  - /util
+    - hashingHelper.js
+    - timeConvertHelper.js
+    - tryCatch.js
 - /public
 - /views
-    - addColleges.hbs
-    - addPost.hbs
-    - error.hbs
-    - index.hbs
-    - layout.hbs
-    - login.hbs
-    - signup.hbs
-    userProfile.hbs
 - .env
+- .dockerignore
+- compose.yaml
+- Dockerfile
 - .gitignore
 - app.js
 - package.json
 ```
-
-
+### mykeys.json file
+```json
+{
+  "type": "",
+  "project_id": "",
+  "private_key_id": "",
+  "private_key": "-----BEGIN PRIVATE KEY-----\n\n-----END PRIVATE KEY-----\n",
+  "client_email": "",
+  "client_id": "",
+  "auth_uri": "",
+  "token_uri": "",
+  "auth_provider_x509_cert_url": "",
+  "client_x509_cert_url": "",
+  "universe_domain": "  "
+}
+```
+### .env file
+```
+MONGO_URI = <mongo-uri>
+PORT = 3000
+SESSION_SECRET = <Random String>
+```
 ## Features
 
 This app offers a range of features to enhance the student experience:
