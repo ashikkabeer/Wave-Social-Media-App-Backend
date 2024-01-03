@@ -1,11 +1,12 @@
 const { updateUserPost } = require('./userControl');
 const { User } = require('../model/user');
 let UserControls = require('./userControl');
+let CollegeControls = require('./collegeControl')
 const Post = require('../model/post');
 const { v4: uuidv4 } = require('uuid');
 const Multer = require('multer');
 const { Storage } = require('@google-cloud/storage');
-
+CollegeControls = new CollegeControls()
 UserControls = new UserControls();
 
 class PostControls {
@@ -17,7 +18,7 @@ class PostControls {
     this.renderProfilePhotoForm = this.renderProfilePhotoForm.bind(this);
   }
   async renderUploadForm(req, res) {
-    res.render('addPost');
+    res.render('addPost',{loggedIn:true});
   }
   async create(req, res) {
     if (!req.session || !req.session.user || !req.session.user._id) {
@@ -35,6 +36,9 @@ class PostControls {
       authorName: author.username,
       authorCollege: author.collegeName,
     };
+    collegeName = await CollegeControls.getCollegeById(data.authorCollege)
+    data.authorCollege = collegeName
+    console.log()
     if (req.file) {
       console.log('image found');
       const imageUrl = await this.uploadImagetoCloud(req.file.buffer);
@@ -51,9 +55,23 @@ class PostControls {
   }
   // add the user data in the post schema
   async retrieveAll(req, res) {
-    const posts = await Post.find({}).exec();
+    const pageNumber = req.query.page || 1
+    const pageSize = Math.max(0,10);
+
+    // Post.paginate({}, { page: pageNumber, limit: pageSize }, (err, result) => {
+    //   if (err) {
+    //     return res.status(500).json({ message: 'Error occurred while fetching users.' });
+    //   }
+    
+    //   const { docs, total, limit, page, pages } = result;
+    //   res.json({ users: docs, total, limit, page, pages });
+    // });
+
+    const posts = await Post.find({}).limit(pageSize).skip(pageSize * pageNumber).exec();
     if (!posts) {
-      throw new Error('Unable to retrieve data');
+      const error =  new Error('Unable to retrieve data');
+      error.stack = 404;
+      throw error
     }
     const formattedPosts = await Promise.all(
       posts.map(async (post) => {
@@ -71,7 +89,7 @@ class PostControls {
       })
     );
     const data = formattedPosts.filter((post) => post !== null);
-    res.render('index', { data });
+    res.render('index', { data, loggedIn:true});
   }
   async uploadImagetoCloud(buffer) {
     console.log('uploading');

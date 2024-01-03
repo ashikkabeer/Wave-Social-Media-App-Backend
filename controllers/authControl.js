@@ -1,14 +1,14 @@
 const { comparePassword } = require('../util/hashingHelper');
 const { User } = require('../model/user');
 const College = require('../model/college');
-
+const {userSchema, validateUser} = require('../util/dataValidation/validation')
 const bcrypt = require('bcrypt');
 let collegeControl = require('./collegeControl');
 collegeControl = new collegeControl();
-const errorHandler  =require('../middlewares/errorHandler')
+const errorHandler = require('../middlewares/errorHandler');
 const app = require('express')();
 
-app.use(errorHandler)
+app.use(errorHandler);
 class authControls {
   constructor() {
     this.signUp = this.signUp.bind(this);
@@ -20,7 +20,9 @@ class authControls {
   async login(req, res) {
     const foundUser = await User.findOne({ username: req.body.username });
     if (!foundUser) {
-      throw new Error('User not found');
+      const error = new Error('User not found');
+      error.status = 404
+      throw error
     }
     //compare hashed password - implememnt
     const passwordMatch = await comparePassword(
@@ -28,7 +30,9 @@ class authControls {
       foundUser.password
     );
     if (!passwordMatch) {
-      throw new Error('Password Mismatch. Try again.');
+      const error = new Error('Password Mismatch. Try again.');
+      error.status = 404;
+      throw error;
     }
     req.session.user = foundUser;
     req.session.loggedIn = true;
@@ -40,6 +44,12 @@ class authControls {
   }
   async signUp(req, res) {
     const userData = req.body;
+    const validation = validateUser(userData)
+    if(validation.error) {
+      const error = new Error('Data Entered is not valid');
+      error.stack = 404;
+      throw error;
+    }
     const hashedPassword = await bcrypt.hash(userData.password, 10);
 
     const user = await User.create({
@@ -51,7 +61,9 @@ class authControls {
       gender: userData.gender,
     });
     if (!user) {
-      throw new Error('Signup Failed');
+      const error = new Error('Signup Failed');
+      error.stack = 404;
+      throw error;
     }
     await collegeControl.updateColleges(userData.collegeName, user._id);
     res.status(200).redirect('/');
@@ -70,7 +82,6 @@ class authControls {
     );
     console.log(college);
     res.render('signup', { college });
-    throw new Error('Failed to render signup page:');
   }
   async renderLogin(req, res) {
     res.render('login');

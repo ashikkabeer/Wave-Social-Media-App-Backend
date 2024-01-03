@@ -17,28 +17,31 @@
 
 <body>
 	{{!-- ----------------------------------- --}}
-<div class="center">
+	<div class="center">
 		<form action="/login" method="POST">
-		<div class="mb-3 ">
-			<label for="username" class="form-label">usernames</label>
-			<input type="text" name="username" class="form-control" id="username" aria-describedby="emailHelp">
-		</div>
-		<div class="mb-3">
-			<label for="exampleInputPassword1" class="form-label">Password</label>
-			<input name="password" type="password" class="form-control" id="exampleInputPassword1">
-		</div>
-		<button type="submit" class="btn btn-primary">Submit</button>
-	</form>
-	<div>
-		<span>
-			Don’t have an account?
-		</span>
+			<div class="mb-3 ">
+				<label for="username" class="form-label">usernames</label>
+				<input type="text" name="username" class="form-control" id="username" aria-describedby="emailHelp">
+			</div>
+			<div class="mb-3">
+				<label for="exampleInputPassword1" class="form-label">Password</label>
+				<input name="password" type="password" class="form-control" id="exampleInputPassword1">
+			</div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+		<div>
+			{{#if errorMessage}}
+			<p class="text-danger mt-3">{{errorMessage}}</p>
+			{{/if}}
+			<span>
+				Don’t have an account?
+			</span>
 
-		<a href=" /signup">
-			Sign Up
+			<a href=" /signup">
+				Sign Up
 			</a>
+		</div>
 	</div>
-</div>
 	{{!-- ----------------------------------------------- --}}
 
 

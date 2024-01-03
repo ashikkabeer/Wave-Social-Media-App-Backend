@@ -1,6 +1,5 @@
-const errorHandler = (error,req,res,next) => {
-    console.log('errorhandler '+ error)
-    return res.status(400).send(error.message);
+const errorHandler = (error, req, res, next) => {
+  res.status(400).render('error', { error });
 };
 
 module.exports = errorHandler;

@@ -1,17 +1,17 @@
 require('dotenv').config();
-var createError = require('http-errors');
+let createError = require('http-errors');
 
-var express = require('express');
-var app = express();
+let express = require('express');
+let app = express();
 const errorHandler = require('./middlewares/errorHandler');
 
-var path = require('path');
-var cookieParser = require('cookie-parser');
+let path = require('path');
+let cookieParser = require('cookie-parser');
 let session = require('express-session');
-var logger = require('morgan');
+let logger = require('morgan');
 const exphbs = require('express-handlebars');
 
-var indexRouter = require('./routes/index');
+let indexRouter = require('./routes/index');
 
 const connect = require('./config/db');
 const mongoURI = process.env.MONGO_URI;
