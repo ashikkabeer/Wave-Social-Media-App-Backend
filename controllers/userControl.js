@@ -9,29 +9,55 @@ class UserControls {
   constructor() {
     this.updateUserPost = this.updatePostList.bind(this);
     this.userInfo = this.userInfo.bind(this);
+    this.renderEdit = this.renderEdit.bind(this);
+    this.updateCoverPicture = this.updateCoverPicture.bind(this);
+    this.updateProfilePicture = this.updateProfilePicture.bind(this);
+    this.updateProfile = this.updateProfile.bind(this);
   }
-  async editProfilePhtot(req, res) {
-    const url = req.originalUrl;
-    const urlSegments = url.split('/');
-    const lastSegment = urlSegments[urlSegments.length - 1];
-    res.render('editProfilePhoto',{photo:lastSegment,user,})
+  async updateCoverPicture(req, res) {
+    const username = req.params.username;
   }
+  async updateProfilePicture(req, res) {
+    const username = req.params.username;
+  }
+  async updateProfile(req, res) {
+    const username = req.params.username;
+  }
+
   async updatePostList(authorId, tweetDataId) {
     await User.findByIdAndUpdate(authorId, {
       $push: { posts: tweetDataId },
     });
   }
+  async renderEdit(req, res, template) {
+    const username = req.params.username;
+
+    if (template === 'editProfile') {
+      const colleges = await College.find({}).exec();
+      const college = await Promise.all(
+        colleges.map(async (college) => {
+          return {
+            _id: college._id,
+            Collegename: college.Collegename,
+            location: college.location,
+          };
+        })
+      );
+      return res.render(template, { username, college });
+    }
+    res.render(template, { username });
+  }
 
   async userInfo(req, res) {
     const username = req.params.username;
+    console.log(username);
     let user = await User.findOne({ username });
-
     if (!user) {
       throw new Error('User not found');
     }
+
     user = {
       name: user.name,
-
       username: user.username,
       collegeId: user.collegeId,
       collegeName: user.collegeName,
@@ -39,8 +65,8 @@ class UserControls {
       profilePhoto: user.profilePhoto || null,
       coverPhoto: user.coverPhoto || null,
     };
-    res.render('userProfile'), { user };
-    console.log(strippedUser);
+    console.log(user);
+    res.render('userProfile', { user });
   }
 }
 

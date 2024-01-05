@@ -13,38 +13,38 @@
     <div class="container">
         <div class="card" style="width: rem;">
             <div class="card-body" style="position: relative;">
-                <img src="{{coverPhoto}}" style="position: absolute; width: 100%; height: 9rem; overflow: hidden;"
+                <img src="{{this.coverPhoto}}" style="position: absolute; width: 100%; height: 9rem; overflow: hidden;"
                     class="background card-img-top" alt="No cover photo">
 
                 <div class="profilePhoto" style="display: flex; flex-direction: column; position: relative;">
 
                     <div class="pp-button" style="width: 20px;">
-                        <img src="{{profilePhoto}}"
+                        <img src="{{user.profilePhoto}}"
                             style="width: 6rem; border-color: white; border: 3px; z-index: 4; padding: 5px; position: absolute;"
                             class="card-img-top" alt="No profile photo">
                     </div>
 
-                    <p class="card-text text-success" style="z-index: 2; margin-top: 9rem;">{{name}}</p>
-                    <p class="card-text text-success" style="z-index: 2;">@{{username}}</p>
-                    <a class="card-text text-success" href="/college/{{collegeId}}"
-                        style="z-index: 2;">{{collegeName}}</a>
+                    <p class="card-text text-success" style="z-index: 2; margin-top: 9rem;">{{user.name}}</p>
+                    <p class="card-text text-success" style="z-index: 2;">@{{user.username}}</p>
+                    <a class="card-text text-success" href="/college/{{user.collegeId}}"
+                        style="z-index: 2;">{{user.collegeName}}</a>
                 </div>
                 <div class="buttons" style="display:flex;">
-                    <a href="/user/edit/profile/dp/{{}}">
+                    <a href="/user/{{user.username}}/edit/profile/dp/">
                         <button type="button" class="btn btn-primary"
                             style="z-index: 3; display:block; align-items:end;" href="">Change Profile Photo</button>
                     </a>
 
-                    <a href="/user/edit/profile/cp/{{}}">
+                    <a href="/user/{{user.username}}/edit/profile/cp">
                         <button type="button" class="btn btn-primary"
                             style="z-index: 3; display:block; align-items:end;" href="">Change Cover Photo</button>
                     </a>
 
-                    <a href="/user/edit/profile/{{}}">
+                    <a href="/user/{{user.username}}/edit/profile/">
                         <button type="button" class="btn btn-primary"
                             style="z-index: 3; display:block; align-items:end;" href="">Edit Profile</button>
                     </a>
-                    
+
                 </div>
 
             </div>
@@ -58,8 +58,7 @@
 
         <div class="posts">
             <div class="card" style="width: 18rem; display: flex; align-items: center;">
-                <img src="./20230410_074532.jpg" style="width: 100px; overflow: hidden; margin: 12px;"
-                    class="card-img-top" alt="...">
+                <img src="" style="width: 100px; overflow: hidden; margin: 12px;" class="card-img-top" alt="...">
                 <div class="card-body">
                     <p class="card-text">Title</p>
                     <p class="card-text">Description</p>
