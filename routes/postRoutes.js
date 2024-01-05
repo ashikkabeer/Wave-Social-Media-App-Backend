@@ -4,7 +4,6 @@ const Multer = require('multer');
 let PostControls = require('../controllers/postControl');
 const authMiddlewares = require('../middlewares/authMiddleware');
 
-PostControls = new PostControls();
 
 const multer = Multer({
   storage: Multer.memoryStorage(),

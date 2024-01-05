@@ -3,71 +3,58 @@ const College = require('../model/college');
 const { extractDate } = require('../util/timeConvertHelper');
 let collegeControl = require('./collegeControl');
 
-collegeControl = new collegeControl();
-
 class UserControls {
-  constructor() {
-    this.updateUserPost = this.updatePostList.bind(this);
-    this.userInfo = this.userInfo.bind(this);
-    this.renderEdit = this.renderEdit.bind(this);
-    this.updateCoverPicture = this.updateCoverPicture.bind(this);
-    this.updateProfilePicture = this.updateProfilePicture.bind(this);
-    this.updateProfile = this.updateProfile.bind(this);
-  }
-  async updateCoverPicture(req, res) {
-    const username = req.params.username;
-  }
-  async updateProfilePicture(req, res) {
-    const username = req.params.username;
-  }
-  async updateProfile(req, res) {
-    const username = req.params.username;
-  }
+  getUsername = (req) => {
+    return req.params.username;
+  };
+  updateCoverPicture = async (req, res) => {
+    const username = this.getUsername(req);
+  };
+  updateProfilePicture = async (req, res) => {
+    const username = this.getUsername(req);
+  };
+  updateProfile = async (req, res) => {
+    const username = this.getUsername(req);
+  };
 
-  async updatePostList(authorId, tweetDataId) {
+  updatePostList = async (authorId, tweetDataId) => {
     await User.findByIdAndUpdate(authorId, {
       $push: { posts: tweetDataId },
     });
-  }
-  async renderEdit(req, res, template) {
-    const username = req.params.username;
+  };
+  renderEdit = async (req, res, template) => {
+    const username = this.getUsername(req);
 
     if (template === 'editProfile') {
-      const colleges = await College.find({}).exec();
-      const college = await Promise.all(
-        colleges.map(async (college) => {
-          return {
-            _id: college._id,
-            Collegename: college.Collegename,
-            location: college.location,
-          };
-        })
-      );
+      const college = await collegeControl.getAllCollege();
       return res.render(template, { username, college });
     }
     res.render(template, { username });
-  }
+  };
 
-  async userInfo(req, res) {
-    const username = req.params.username;
-    console.log(username);
+  getUserByUsername = async (username) => {
     let user = await User.findOne({ username });
     if (!user) {
       throw new Error('User not found');
     }
+    return user;
+  };
+  userInfo = async (req, res) => {
+    const username = this.getUsername(req);
+    let userFromDb = await this.getUserByUsername(username);
 
-    user = {
-      name: user.name,
-      username: user.username,
-      collegeId: user.collegeId,
-      collegeName: user.collegeName,
-      posts: user.posts,
-      profilePhoto: user.profilePhoto || null,
-      coverPhoto: user.coverPhoto || null,
+    const user = {
+      name: userFromDb.name,
+      username: userFromDb.username,
+      collegeId: userFromDb.collegeId,
+      collegeName: userFromDb.collegeName,
+      posts: userFromDb.posts,
+      profilePhoto: userFromDb.profilePhoto || null,
+      coverPhoto: userFromDb.coverPhoto || null,
     };
-    console.log(user);
+
     res.render('userProfile', { user });
-  }
+  };
 }
 
-module.exports = UserControls;
+module.exports = new UserControls();

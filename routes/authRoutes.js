@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 const tryCatch = require('../util/tryCatch');
 let authControls = require('../controllers/authControl');
-authControls = new authControls();
 
 router.get('/', (req, res) => {
   res.redirect('/post');

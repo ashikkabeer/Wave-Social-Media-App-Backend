@@ -1,13 +1,7 @@
 const College = require('../model/college');
 
 class CollegeControls {
-  constructor() {
-    this.addCollege = this.addCollege.bind(this);
-    this.updateStudents = this.updateColleges.bind(this);
-    this.renderAddColleges = this.renderAddColleges.bind(this);
-    this.getCollegeById = this.getCollegeById.bind(this);
-  }
-  async getCollegeById(collegeId) {
+  getCollegeById = async (collegeId) => {
     try {
       console.log(collegeId);
       const college = await College.findById(collegeId);
@@ -23,34 +17,46 @@ class CollegeControls {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  async searchCollege(req, res) {
+  searchCollege = async (req, res) => {
     const key = req.query.key;
     //search in database
-  }
+  };
 
-  async addCollege(req, res) {
+  getAllCollege = async () => {
+    const colleges = await College.find({}).exec();
+    const college = await Promise.all(
+      colleges.map((college) => {
+        return {
+          _id: college._id,
+          Collegename: college.Collegename,
+          location: college.location,
+        };
+      })
+    );
+    return college;
+  };
+
+  addCollege = async (req, res) => {
     const college = await College.create(req.body);
     if (!college) {
       const error = new Error('Invalid input data');
       error.stack = 404;
       throw error;
     } else {
-      res
-        .status(200)
-        .render('addcolleges', {
-          message: 'College added successfully',
-          data: college,
-        });
+      res.status(200).render('addcolleges', {
+        message: 'College added successfully',
+        data: college,
+      });
     }
-  }
+  };
 
-  async renderAddColleges(req, res) {
+  renderAddColleges = async (req, res) => {
     res.render('addcolleges');
-  }
+  };
 
-  async updateColleges(collegeId, studentsId) {
+  updateColleges = async (collegeId, studentsId) => {
     const update = await College.findByIdAndUpdate(collegeId, {
       $push: { studentIds: studentsId },
     });
@@ -59,7 +65,7 @@ class CollegeControls {
       error.stack = 404;
       throw error;
     }
-  }
+  };
 }
 
-module.exports = CollegeControls;
+module.exports = new CollegeControls();

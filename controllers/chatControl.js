@@ -1,14 +1,10 @@
-
-
 class chatControls {
-    constructor() {
-        this.sendMessage.bind(this);
-    }
-    async sendMessage(req,res) {
+  sendMessage = async (req, res) => {
 
-    }
+  };
 
-    async getChatHistory(req,res) {
-        
-    }
+  getChatHistory = async (req, res) => {
+
+  };
 }
+module.exports = new chatControls()
