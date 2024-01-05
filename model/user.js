@@ -1,6 +1,6 @@
-const { Schema, model } = require("mongoose");
-//checking the changes
-//Schema for the user
+const { boolean, string } = require('joi');
+const { Schema, model } = require('mongoose');
+
 const userSchema = new Schema({
   name: {
     type: String,
@@ -20,35 +20,48 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  collegeName: {
+  collegeId: {
     type: Schema.Types.ObjectId,
-    ref: "colleges",
+    ref: 'colleges',
+    required: true,
+  },
+  collegeName: {
+    type: String,
     required: true,
   },
   profilePhoto: {
-    type : String
-  }, // Store the URL of the profile photo
+    type: String,
+  },
   coverPhoto: {
-    type:String
+    type: String,
   },
   bio: {
     type: String,
   },
   gender: {
     type: String,
-    enum: ["male", "female", "other"],
+    enum: ['male', 'female', 'other'],
     required: true,
+  },
+  active: {
+    type: Boolean,
+    default: false,
+  },
+  role: {
+    type: String,
+    enum: ['administrator', 'user'],
+    default: 'user',
   },
   friends: [
     {
       type: Schema.Types.ObjectId,
-      ref: "User" 
-    }
+      ref: 'User',
+    },
   ],
   posts: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Post",
+      ref: 'Post',
     },
   ],
   totalPosts: {
@@ -61,9 +74,7 @@ const userSchema = new Schema({
   },
 });
 
-
-
-const User = model("User", userSchema);
+const User = model('User', userSchema);
 
 module.exports = {
   User,

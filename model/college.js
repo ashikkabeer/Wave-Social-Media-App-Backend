@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const collegeSchema = new Schema({
   Collegename: {
@@ -17,7 +17,7 @@ const collegeSchema = new Schema({
   studentIds: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Student",
+      ref: 'Student',
     },
   ],
 
@@ -25,7 +25,7 @@ const collegeSchema = new Schema({
     {
       user: {
         type: Schema.Types.ObjectId,
-        ref: "User",
+        ref: 'User',
       },
       rating: {
         type: Number,
@@ -43,5 +43,5 @@ const collegeSchema = new Schema({
 });
 
 // Create the College model
-const College = model("College", collegeSchema);
-module.exports = College
+const College = model('College', collegeSchema);
+module.exports = College;

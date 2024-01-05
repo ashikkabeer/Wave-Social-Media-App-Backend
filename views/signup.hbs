@@ -32,7 +32,7 @@
 
 <body>
   <form action="/signup" method="post">
-  <div class="mb-3">
+    <div class="mb-3">
       <label for="exampleInputUsername" class="form-label">Name</label>
       <input type="text" name="name" class="form-control" id="exampleInputUsername" aria-describedby="emailHelp">
     </div>
@@ -49,9 +49,13 @@
       <label for="exampleInputPassword1" class="form-label">Password</label>
       <input type="password" name="password" class="form-control" id="exampleInputPassword1">
     </div>
-    <select style="width: 50%;" name="collegeName" id="collegeName">
+    <select style="width: 50%;" name="collegeId" id="collegeId">
       {{#each college}}
-        <option style="width: 50%;" name="collegeName" id="collegeName" class="dropdown-item college-item" value="{{_id}}">{{this.Collegename}}, {{this.location}}</option>
+      {{!-- <option style="width: 50%;" name="collegeId" id="collegeId" class="dropdown-item college-item"
+        value="{{this._id}}">{{this.Collegename}}, {{this.location}}</option> --}}
+      <option style="width: 50%;" name="collegeId" id="collegeId" class="dropdown-item college-item"
+        value="{{this._id}}">{{this.Collegename}}, {{this.location}}</option>
+
       {{/each}}
     </select>
 

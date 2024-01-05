@@ -13,6 +13,9 @@
       
   <form action="/college/add" method="post">
     <div class="mb-3">
+       {{#if message}}
+      <h4 id="emailHelp" class=".text-success"> {{message}}</h4>
+       {{/if}}
       <label for="exampleInputEmail1" class="form-label">College Name</label>
       <input name="Collegename" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
       <div id="emailHelp" class="form-text">Enter your College Name</div>

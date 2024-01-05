@@ -9,7 +9,9 @@ class CollegeControls {
   }
   async getCollegeById(collegeId) {
     try {
+      console.log(collegeId);
       const college = await College.findById(collegeId);
+      console.log('in getcollegeby id: ' + college);
       if (college) {
         console.log(college);
         let collegeName = college.Collegename;
@@ -35,7 +37,12 @@ class CollegeControls {
       error.stack = 404;
       throw error;
     } else {
-      res.status(200).json({ message: 'Operation successful', data: college });
+      res
+        .status(200)
+        .render('addcolleges', {
+          message: 'College added successfully',
+          data: college,
+        });
     }
   }
 

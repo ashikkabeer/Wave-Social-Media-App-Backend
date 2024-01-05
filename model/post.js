@@ -1,5 +1,6 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
+const College = require('./college');
 const postSchema = new Schema({
   title: {
     type: String,
@@ -12,16 +13,21 @@ const postSchema = new Schema({
   images: {
     type: String,
   },
-  author: {
+  authorId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
-  authorName: {
+  authorUsername: {
     type: String,
     required: true,
   },
-  authorCollege: {
+  authorCollegeId: {
+    type: Schema.Types.ObjectId,
+    ref: 'College',
+    required: true,
+  },
+  authorCollegeName: {
     type: String,
     required: true,
   },
@@ -38,6 +44,6 @@ const postSchema = new Schema({
     default: Date.now,
   },
 });
-postSchema.plugin(mongoosePaginate)
-const Post = model("Post", postSchema);
+postSchema.plugin(mongoosePaginate);
+const Post = model('Post', postSchema);
 module.exports = Post;

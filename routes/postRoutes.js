@@ -1,8 +1,8 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
-const Multer = require("multer");
-let PostControls  = require("../controllers/postControl");
-const authMiddlewares = require("../middlewares/authMiddleware");
+const Multer = require('multer');
+let PostControls = require('../controllers/postControl');
+const authMiddlewares = require('../middlewares/authMiddleware');
 
 PostControls = new PostControls();
 
@@ -14,11 +14,11 @@ const multer = Multer({
 });
 const tryCatch = require('../util/tryCatch');
 
-router.use(authMiddlewares.isAuthenticated)
+router.use(authMiddlewares.isAuthenticated);
 
-router.get("/:page?", tryCatch(PostControls.retrieveAll));
+router.get('/:page?', tryCatch(PostControls.retrieveAll));
 router.get('/upload', tryCatch(PostControls.renderUploadForm));
-router.post("/upload", multer.single("image"), tryCatch(PostControls.create));
+router.post('/upload', multer.single('image'), tryCatch(PostControls.create));
 router.get('/profile-pic', tryCatch(PostControls.renderProfilePhotoForm));
 
 module.exports = router;

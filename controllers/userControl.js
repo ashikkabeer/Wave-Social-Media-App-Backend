@@ -8,33 +8,38 @@ collegeControl = new collegeControl();
 class UserControls {
   constructor() {
     this.updateUserPost = this.updatePostList.bind(this);
+    this.userInfo = this.userInfo.bind(this);
   }
-
+  async editProfilePhtot(req, res) {
+    const url = req.originalUrl;
+    const urlSegments = url.split('/');
+    const lastSegment = urlSegments[urlSegments.length - 1];
+    res.render('editProfilePhoto',{photo:lastSegment,user,})
+  }
   async updatePostList(authorId, tweetDataId) {
     await User.findByIdAndUpdate(authorId, {
       $push: { posts: tweetDataId },
     });
   }
 
-  async info(req, res) {
+  async userInfo(req, res) {
     const username = req.params.username;
-    const user = await User.findOne({ username });
+    let user = await User.findOne({ username });
 
     if (!user) {
-      throw new Error('User not found')
+      throw new Error('User not found');
     }
-    const formattedDate = await extractDate(user.createdAt);
-    const collegeName = await College.findById(user.collegeName);
+    user = {
+      name: user.name,
 
-    const strippedUser = {
       username: user.username,
-      collegeName: collegeName.Collegename,
-      gender: user.gender,
+      collegeId: user.collegeId,
+      collegeName: user.collegeName,
       posts: user.posts,
-      totalPosts: user.totalPosts,
-      createdAt: [formattedDate[0], formattedDate[1]],
+      profilePhoto: user.profilePhoto || null,
+      coverPhoto: user.coverPhoto || null,
     };
-    res.status(200).json(strippedUser);
+    res.render('userProfile'), { user };
     console.log(strippedUser);
   }
 }

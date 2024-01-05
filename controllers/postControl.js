@@ -1,12 +1,12 @@
 const { updateUserPost } = require('./userControl');
 const { User } = require('../model/user');
 let UserControls = require('./userControl');
-let CollegeControls = require('./collegeControl')
+let CollegeControls = require('./collegeControl');
 const Post = require('../model/post');
 const { v4: uuidv4 } = require('uuid');
 const Multer = require('multer');
 const { Storage } = require('@google-cloud/storage');
-CollegeControls = new CollegeControls()
+CollegeControls = new CollegeControls();
 UserControls = new UserControls();
 
 class PostControls {
@@ -18,7 +18,7 @@ class PostControls {
     this.renderProfilePhotoForm = this.renderProfilePhotoForm.bind(this);
   }
   async renderUploadForm(req, res) {
-    res.render('addPost',{loggedIn:true});
+    res.render('addPost', { loggedIn: true });
   }
   async create(req, res) {
     if (!req.session || !req.session.user || !req.session.user._id) {
@@ -32,13 +32,14 @@ class PostControls {
     let data = {
       title: req.body.title,
       content: req.body.content,
-      author: req.session.user._id,
-      authorName: author.username,
-      authorCollege: author.collegeName,
+      authorId: req.session.user._id,
+      authorUsername: req.session.user.username,
+      authorCollegeId: req.session.user.collegeId,
+      authorCollegeName: req.session.user.collegeName,
     };
-    collegeName = await CollegeControls.getCollegeById(data.authorCollege)
-    data.authorCollege = collegeName
-    console.log()
+    // collegeName = await CollegeControls.getCollegeById(data.authorCollege);
+    // data.authorCollege = collegeName;
+    // console.log();
     if (req.file) {
       console.log('image found');
       const imageUrl = await this.uploadImagetoCloud(req.file.buffer);
@@ -46,7 +47,7 @@ class PostControls {
       data.images = imageUrl;
     }
     const post = await Post.create(data);
-    await UserControls.updatePostList(post.author, post._id);
+    await UserControls.updatePostList(post.authorId, post._id);
     return res.status(200).redirect('/');
   }
 
@@ -55,23 +56,14 @@ class PostControls {
   }
   // add the user data in the post schema
   async retrieveAll(req, res) {
-    const pageNumber = req.query.page || 1
-    const pageSize = Math.max(0,10);
+    // const pageNumber = req.query.page || 1;
+    // const pageSize = Math.max(0, 10);
 
-    // Post.paginate({}, { page: pageNumber, limit: pageSize }, (err, result) => {
-    //   if (err) {
-    //     return res.status(500).json({ message: 'Error occurred while fetching users.' });
-    //   }
-    
-    //   const { docs, total, limit, page, pages } = result;
-    //   res.json({ users: docs, total, limit, page, pages });
-    // });
-
-    const posts = await Post.find({}).limit(pageSize).skip(pageSize * pageNumber).exec();
+    const posts = await Post.find({}).exec();
     if (!posts) {
-      const error =  new Error('Unable to retrieve data');
+      const error = new Error('Unable to retrieve data');
       error.stack = 404;
-      throw error
+      throw error;
     }
     const formattedPosts = await Promise.all(
       posts.map(async (post) => {
@@ -79,8 +71,8 @@ class PostControls {
           title: post.title,
           content: post.content,
           image: post.images,
-          author: post.author,
-          authorName: post.authorName,
+          authorId: post.author,
+          authorUsername: post.authorName,
           authorCollege: post.authorCollege,
           upvotes: post.upvotes,
           views: post.views,
@@ -89,7 +81,7 @@ class PostControls {
       })
     );
     const data = formattedPosts.filter((post) => post !== null);
-    res.render('index', { data, loggedIn:true});
+    res.render('index', { data, loggedIn: true });
   }
   async uploadImagetoCloud(buffer) {
     console.log('uploading');

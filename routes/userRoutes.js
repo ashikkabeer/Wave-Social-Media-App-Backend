@@ -8,6 +8,7 @@ UserControls = new UserControls();
 
 router.use(authMiddlewares.isAuthenticated);
 
-router.get('/:username', tryCatch(UserControls.info));
+router.get('/:username', tryCatch(UserControls.userInfo));
+// router.get('/upload', tryCatch(PostControls.renderUploadForm));
 
 module.exports = router;
