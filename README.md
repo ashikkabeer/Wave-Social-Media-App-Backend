@@ -2,7 +2,8 @@
 ### [Link to Documentation](https://ashikkabeer.notion.site/Social-Media-App-Documentaion-bddbf5b9377043b8b81a3e7dccb8e526)
 
 
-### [Live Link](http://studentsocials-env.eba-vcmmdpxm.eu-north-1.elasticbeanstalk.com/)
+### [Live Link](https://fit-legacy-399206.uc.r.appspot.com/login)
+### Hosted on App Engine Google Cloud
 ![gif](https://media.giphy.com/media/l1J9IFcDSYcAeHH5m/giphy.gif)
 
 ## Description
