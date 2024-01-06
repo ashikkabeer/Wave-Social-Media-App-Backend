@@ -2,7 +2,7 @@ const { User } = require('../model/user');
 const College = require('../model/college');
 const { extractDate } = require('../util/timeConvertHelper');
 let collegeControl = require('./collegeControl');
-
+const CloudControls = require('./cloudControl');
 class UserControls {
   getUsername = (req) => {
     return req.params.username;
@@ -15,6 +15,10 @@ class UserControls {
   };
   updateProfile = async (req, res) => {
     const username = this.getUsername(req);
+    const imageUrl = await CloudControls.uploadImagetoCloud(req.file.buffer);
+    const user = await User.findOneAndUpdate({username:username},{profilePhoto:imageUrl})
+    console.log(user)
+    res.redirect(`user/${username}/edit/profile`)
   };
 
   updatePostList = async (authorId, tweetDataId) => {

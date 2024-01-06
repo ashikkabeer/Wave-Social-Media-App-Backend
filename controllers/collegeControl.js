@@ -53,7 +53,7 @@ class CollegeControls {
   };
 
   renderAddColleges = async (req, res) => {
-    res.render('addcolleges');
+    res.render('addColleges');
   };
 
   updateColleges = async (collegeId, studentsId) => {
