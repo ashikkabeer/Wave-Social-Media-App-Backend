@@ -13,6 +13,7 @@
             flex-wrap: wrap;
             justify-content: center;
         }
+
         .card {
             margin: 10px;
         }
@@ -31,8 +32,10 @@
                 <div class="card-body">
                     <h5 class="card-title">{{title}}</h5>
                     <p class="card-text">{{content}}</p>
-                    <a class="card-text" href="user/{{authorId}}">@{{authorUsername}}</a>
-                    <a class="card-text" href="college/{{authorCollegeId}}">@{{authorCollegeName}}</a>
+                    <div class="users" style="display: block">
+                        <a class="card-text" href="user/{{authorUsername}}">@{{authorUsername}}</a>
+                        <a class="card-text" href="college/{{authorCollegeId}}">@{{authorCollegeName}}</a>
+                    </div>
                     <a href="#" class="btn btn-primary" style="align-items: start;">Like</a>
                 </div>
             </div>

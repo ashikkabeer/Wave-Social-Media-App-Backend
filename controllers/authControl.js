@@ -1,4 +1,4 @@
-const { comparePassword } = require('../util/hashingHelper');
+const { comparePassword, hashPassword } = require('../util/hashingHelper');
 const { User } = require('../model/user');
 const {
   userSchema,
@@ -6,10 +6,11 @@ const {
 } = require('../util/dataValidation/validation');
 const bcrypt = require('bcrypt');
 let collegeControl = require('./collegeControl');
-
+require('dotenv').config()
 class authControls {
+
   findUserByUsername = async (username) => {
-    const foundUser = await User.findOne({ username: req.body.username });
+    const foundUser = await User.findOne({ username: username });
     if (!foundUser) {
       const error = new Error('User not found');
       error.status = 404;
@@ -19,13 +20,11 @@ class authControls {
   };
   login = async (req, res) => {
     const foundUser = await this.findUserByUsername(req.body.username);
-    //compare hashed password - implememnt
-    const passwordMatch = await comparePassword(
-      req.body.password,
-      foundUser.password
-    );
+    await comparePassword(req.body.password, foundUser.password);
     req.session.user = foundUser;
     req.session.loggedIn = true;
+    console.log('user logged in')
+
     if (req.session) {
       res.status(200).redirect('/post');
     } else {
@@ -44,7 +43,8 @@ class authControls {
     // }
     const collegeName = await collegeControl.getCollegeById(userData.collegeId);
     const salt_rounds = process.env.SALT_ROUND;
-    const hashedPassword = await bcrypt.hash(userData.password, salt_rounds);
+    console.log(salt_rounds) 
+    const hashedPassword = await hashPassword(userData.password, 10);
     const users = {
       name: userData.name,
       username: userData.username,

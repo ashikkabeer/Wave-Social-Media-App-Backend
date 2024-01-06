@@ -1,12 +1,15 @@
 const { updateUserPost } = require('./userControl');
 const { User } = require('../model/user');
 let UserControls = require('./userControl');
-let CloudControls = require('./cloudControl')
+let CloudControls = require('./cloudControl');
 const Post = require('../model/post');
 
 require('dotenv').config();
 class PostControls {
-  renderUploadForm = async (req, res) => {
+  constructor () {
+    this.renderUploadForm = this.renderUploadForm.bind(this)
+  }
+  async renderUploadForm (req, res) {
     res.render('addPost', { loggedIn: true });
   };
   create = async (req, res) => {
@@ -17,7 +20,6 @@ class PostControls {
       throw new Error('Title and content are required');
     }
     const authorId = req.session.user._id;
-    const author = await User.findById(authorId);
     let data = {
       title: req.body.title,
       content: req.body.content,
@@ -42,10 +44,8 @@ class PostControls {
   };
   // add the user data in the post schema
   retrieveAll = async (req, res) => {
-    // const pageNumber = req.query.page || 1;
-    // const pageSize = Math.max(0, 10);
-
     const posts = await Post.find({}).exec();
+    console.log(posts)
     if (!posts) {
       const error = new Error('Unable to retrieve data');
       error.stack = 404;
@@ -57,9 +57,10 @@ class PostControls {
           title: post.title,
           content: post.content,
           image: post.images,
-          authorId: post.author,
-          authorUsername: post.authorName,
-          authorCollege: post.authorCollege,
+          authorId: post.authorId,
+          authorUsername: post.authorUsername,
+          authorCollegeId: post.authorCollegeId,
+          authorCollegeName:post.authorCollegeName,
           upvotes: post.upvotes,
           views: post.views,
           date: post.createdAt,
@@ -67,9 +68,9 @@ class PostControls {
       })
     );
     const data = formattedPosts.filter((post) => post !== null);
+    console.log(data)
     res.render('index', { data, loggedIn: true });
   };
-  
 }
 
-module.exports = PostControls;
+module.exports = new PostControls();

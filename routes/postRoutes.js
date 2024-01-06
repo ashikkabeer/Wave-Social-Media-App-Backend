@@ -15,9 +15,9 @@ const tryCatch = require('../util/tryCatch');
 
 router.use(authMiddlewares.isAuthenticated);
 
-router.get('/:page?', tryCatch(PostControls.retrieveAll));
+// router.get('/:page?', tryCatch(PostControls.renderUploadForm));
 router.get('/upload', tryCatch(PostControls.renderUploadForm));
 router.post('/upload', multer.single('image'), tryCatch(PostControls.create));
 router.get('/profile-pic', tryCatch(PostControls.renderProfilePhotoForm));
-
+router.get('/:page?', tryCatch(PostControls.retrieveAll));
 module.exports = router;
