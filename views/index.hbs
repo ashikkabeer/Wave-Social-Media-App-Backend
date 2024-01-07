@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -8,42 +8,81 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
-        .cards {
-            display: flex;
-            flex-wrap: wrap;
+        .like-button {
+            max-width: 100px;
             justify-content: center;
         }
 
+        .index {
+            margin: auto;
+            width: 90%;
+            /* Set your desired width */
+            padding: 10px;
+            margin-top: auto;
+            text-align: center;
+            /* Center the content */
+        }
+
         .card {
-            margin: 10px;
+            max-width: 800px;
+            /* Set your desired max-width for individual cards */
+            width: 100%;
+            margin: 10px auto;
+            /* Center the card horizontally */
+            overflow: hidden;
+        }
+
+        .card .ratio {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .card-img-top {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .content {
+            max-height: 400px;
+            overflow: hidden;
         }
     </style>
 </head>
 
 <body>
-    {{!-- header --}}
-    <section>
-        <div class="container text-center cards">
+    <div class="index">
+        <section>
             {{#each data}}
-            <div class="card" style="max-width: 18rem;">
-                <div class="ratio ratio-1x1">
-                    <img class="card-img-top" src="{{image}}" alt="Card image cap">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">{{title}}</h5>
-                    <p class="card-text">{{content}}</p>
-                    <div class="users" style="display: block">
-                        <a class="card-text" href="user/{{authorUsername}}">@{{authorUsername}}</a>
-                        <a class="card-text" href="college/{{authorCollegeId}}">@{{authorCollegeName}}</a>
+            <div class="card">
+                <div class="card-header">
+                    <div class="users ms-0 text-start">
+                        <a class="text-decoration-none card-text  " href="user/{{authorUsername}}">@{{authorUsername}}
+                            <br></a>
+                        <a class="text-decoration-none card-text text-sm"
+                            href="college/{{authorCollegeId}}">{{authorCollegeName}}</a>
                     </div>
-                    <a href="#" class="btn btn-primary" style="align-items: start;">Like</a>
                 </div>
+                <div class="content">
+                    <div class="card-body">
+                        <div class="text-start">
+                            <h5 class="card-title">{{title}}</h5>
+                            <p class="card-text">{{content}}</p>
+                        </div>
+
+                        <div class="ratio ratio-16x9">
+                            <img class="card-img-top" src="{{image}}" alt="Card image cap">
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-around mt-3 "><p><a href="#" class="text-center like-button btn btn-primary">Like</a></p>
+                <p><a href="#" class="text-center like-button btn btn-primary">Share</a></p></div>
+                
             </div>
             {{/each}}
-        </div>
-    </section>
-
-
+        </section>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"

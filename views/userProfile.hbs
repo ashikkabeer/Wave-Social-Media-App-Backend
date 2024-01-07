@@ -13,7 +13,7 @@
     <div class="container">
         <div class="card" style="">
             <div class="card-body" style="position: relative;">
-                <img src="{{this.coverPhoto}}" style="position: absolute; width: 100%; height: 9rem; overflow: hidden;"
+                <img src="{{user.coverPhoto}}" style="position: absolute; width: 100%; height: 9rem; overflow: hidden;"
                     class="background card-img-top" alt="No cover photo">
 
                 <div class="profilePhoto" style="display: flex; flex-direction: column; position: relative;">
@@ -29,7 +29,9 @@
                     <a class="card-text text-success" href="/college/{{user.collegeId}}"
                         style="z-index: 2;">{{user.collegeName}}</a>
                 </div>
+
                 <div class="buttons" style="display:flex;">
+                    {{#if isAuthorized}}
                     <a href="/user/{{user.username}}/edit/profile/dp/">
                         <button type="button" class="btn btn-primary"
                             style="z-index: 3; display:block; align-items:end;" href="">Change Profile Photo</button>
@@ -44,7 +46,7 @@
                         <button type="button" class="btn btn-primary"
                             style="z-index: 3; display:block; align-items:end;" href="">Edit Profile</button>
                     </a>
-
+                    {{/if}}
                 </div>
 
             </div>

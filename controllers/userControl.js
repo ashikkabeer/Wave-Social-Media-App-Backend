@@ -3,6 +3,7 @@ const College = require('../model/college');
 const { extractDate } = require('../util/timeConvertHelper');
 let collegeControl = require('./collegeControl');
 const CloudControls = require('./cloudControl');
+const authControl = require('./authControl');
 class UserControls {
   getUsername = (req) => {
     return req.params.username;
@@ -33,7 +34,7 @@ class UserControls {
       const college = await collegeControl.getAllCollege();
       return res.render(template, { username, college });
     }
-    res.render(template, { username });
+    res.render(template, { username, loggedIn: true });
   };
 
   getUserByUsername = async (username) => {
@@ -46,7 +47,7 @@ class UserControls {
   userInfo = async (req, res) => {
     const username = this.getUsername(req);
     let userFromDb = await this.getUserByUsername(username);
-
+    
     const user = {
       name: userFromDb.name,
       username: userFromDb.username,
@@ -56,8 +57,8 @@ class UserControls {
       profilePhoto: userFromDb.profilePhoto || null,
       coverPhoto: userFromDb.coverPhoto || null,
     };
-
-    res.render('userProfile', { user });
+    const isAuthorized = await authControl.isAuthorized(req,username);
+    res.render('userProfile', { isAuthorized, user, loggedIn: true });
   };
 }
 

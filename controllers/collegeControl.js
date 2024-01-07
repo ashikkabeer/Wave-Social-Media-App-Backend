@@ -53,7 +53,13 @@ class CollegeControls {
   };
 
   renderAddColleges = async (req, res) => {
-    res.render('addColleges');
+    let permission = false
+    const role = 'user' 
+    if(role === 'admin') {
+      permission = true
+    }
+    // edit this to check the role of the user
+    res.render('addColleges',{permission});
   };
 
   updateColleges = async (collegeId, studentsId) => {

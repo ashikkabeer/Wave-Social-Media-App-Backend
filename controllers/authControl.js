@@ -6,9 +6,14 @@ const {
 } = require('../util/dataValidation/validation');
 const bcrypt = require('bcrypt');
 let collegeControl = require('./collegeControl');
-require('dotenv').config()
+require('dotenv').config();
 class authControls {
-
+  isAuthorized = async (req, username) => {
+    if (req.session.user.username === username) {
+      return true;
+    }
+    return false;
+  };
   findUserByUsername = async (username) => {
     const foundUser = await User.findOne({ username: username });
     if (!foundUser) {
@@ -23,7 +28,7 @@ class authControls {
     await comparePassword(req.body.password, foundUser.password);
     req.session.user = foundUser;
     req.session.loggedIn = true;
-    console.log('user logged in')
+    console.log('user logged in');
 
     if (req.session) {
       res.status(200).redirect('/post');
@@ -43,7 +48,7 @@ class authControls {
     // }
     const collegeName = await collegeControl.getCollegeById(userData.collegeId);
     const salt_rounds = process.env.SALT_ROUND;
-    console.log(salt_rounds) 
+    console.log(salt_rounds);
     const hashedPassword = await hashPassword(userData.password, 10);
     const users = {
       name: userData.name,

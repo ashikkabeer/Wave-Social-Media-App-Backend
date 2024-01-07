@@ -39,9 +39,6 @@ class PostControls {
     return res.status(200).redirect('/');
   };
 
-  renderProfilePhotoForm = async (req, res) => {
-    res.render('imageUpload');
-  };
   // add the user data in the post schema
   retrieveAll = async (req, res) => {
     const posts = await Post.find({}).exec();
