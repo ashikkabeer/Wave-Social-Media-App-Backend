@@ -13,13 +13,13 @@ class UserControls {
   };
   updateProfilePicture = async (req, res) => {
     const username = this.getUsername(req);
-  };
-  updateProfile = async (req, res) => {
-    const username = this.getUsername(req);
     const imageUrl = await CloudControls.uploadImagetoCloud(req.file.buffer);
     const user = await User.findOneAndUpdate({username:username},{profilePhoto:imageUrl})
     console.log(user)
     res.redirect(`user/${username}/edit/profile`)
+  };
+  updateProfile = async (req, res) => {
+    
   };
 
   updatePostList = async (authorId, tweetDataId) => {
