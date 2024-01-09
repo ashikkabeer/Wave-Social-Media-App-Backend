@@ -20,6 +20,12 @@ const collegeSchema = new Schema({
       ref: 'Student',
     },
   ],
+  postIds: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Post',
+    },
+  ],
 
   ratings: [
     {

@@ -2,7 +2,7 @@ const Joi = require('joi')
 
 
 const userSchema = Joi.object({
-    name: Joi.string().alphanum().min(3).max(30).required(), 
+    name: Joi.string().alphanum().min(3).max(30).required().regex(/^\s*\w+(?:[^\w,]+\w+)*[^,\w]*$/), 
     username: Joi.string().alphanum().min(3).max(30).required(),
     email:Joi.string().email().required(),
     password:  Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
@@ -15,6 +15,5 @@ const validateUser = (data) => {
 }
 
 module.exports = {
-    userSchema,
     validateUser
 }

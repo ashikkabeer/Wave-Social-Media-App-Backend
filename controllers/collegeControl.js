@@ -1,5 +1,7 @@
 const College = require('../model/college');
+const Post = require('../model/post')
 
+const { User } = require('../model/user');
 class CollegeControls {
   getCollegeById = async (collegeId) => {
     try {
@@ -53,13 +55,13 @@ class CollegeControls {
   };
 
   renderAddColleges = async (req, res) => {
-    let permission = false
-    const role = 'user' 
-    if(role === 'admin') {
-      permission = true
+    let permission = false;
+    const role = 'user';
+    if (role === 'admin') {
+      permission = true;
     }
     // edit this to check the role of the user
-    res.render('addColleges',{permission});
+    res.render('addColleges', { permission });
   };
 
   updateColleges = async (collegeId, studentsId) => {
@@ -71,6 +73,51 @@ class CollegeControls {
       error.stack = 404;
       throw error;
     }
+  };
+  findStudents = async (studentIds) => {
+    console.log('in the findStudents' + typeof studentIds);
+    const students = [];
+    for (const studentId of studentIds) {
+      const student = await User.findById(studentId);
+      if (student) {
+        const { id, name, username, profilePhoto,posts } = student;
+        await this.getCollegePosts(posts);
+        students.push({ id, name, username, profilePhoto,posts });
+      }
+    }
+    return students;
+  };
+
+  //completely change this function. add a schema to get the post id 
+  // to college db. each college have a list
+  getCollegePosts = async (postIds) => {
+    console.log('In the getCollegePosts function');
+    const posts = []
+    for (const postId of postIds) {
+      const post = await Post.findById(postId);
+      if(post) {
+        const {title, content, images, authorId, authorUsername} = post
+        console.log(title, content, images, authorId, authorUsername)
+        posts.push({title, content, images, authorId, authorUsername})
+      }
+    }
+    return posts
+  }
+  collegeInfo = async (req, res) => {
+    const collegeId = req.params.collegeId;
+    console.log(collegeId);
+    let college = await College.findById(collegeId);
+
+    if (!college) {
+      throw new Error('College not found');
+    }
+    let { Collegename, location, establishedYear, studentIds } = college;
+    college = { Collegename, location, establishedYear };
+    console.log(studentIds);
+    const students = await this.findStudents(studentIds);
+    console.log(college, students)
+    
+    await res.render('collegeProfile', { college, students, loggedIn: true });
   };
 }
 

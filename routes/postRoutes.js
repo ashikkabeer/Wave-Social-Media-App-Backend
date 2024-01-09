@@ -14,7 +14,6 @@ const multer = Multer({
 const tryCatch = require('../util/tryCatch');
 
 router.use(authMiddlewares.isAuthenticated);
-
 router.post('/upload', multer.single('image'), tryCatch(PostControls.create));
 router.get('/upload', tryCatch(PostControls.renderUploadForm));
 router.get('/:page?', tryCatch(PostControls.retrieveAll));

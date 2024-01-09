@@ -1,12 +1,10 @@
+require('dotenv').config();
 const { comparePassword, hashPassword } = require('../util/hashingHelper');
 const { User } = require('../model/user');
-const {
-  userSchema,
-  validateUser,
-} = require('../util/dataValidation/validation');
-const bcrypt = require('bcrypt');
+const { validateUser } = require('../util/dataValidation/validation');
 let collegeControl = require('./collegeControl');
-require('dotenv').config();
+const jwt = require('jsonwebtoken');
+
 class authControls {
   isAuthorized = async (req, username) => {
     if (req.session.user.username === username) {
@@ -24,28 +22,25 @@ class authControls {
     return foundUser;
   };
   login = async (req, res) => {
-    const foundUser = await this.findUserByUsername(req.body.username);
-    await comparePassword(req.body.password, foundUser.password);
-    req.session.user = foundUser;
-    req.session.loggedIn = true;
-    console.log('user logged in');
-
+    const user = await this.findUserByUsername(req.body.username);
+    await comparePassword(req.body.password, user.password);
+    req.session.user = user;
     if (req.session) {
-      res.status(200).redirect('/post');
+      return res.status(200).redirect('/post');
     } else {
       throw new Error('Authentication Failed');
     }
   };
   signUp = async (req, res) => {
     const userData = req.body;
-    // const validation = validateUser(userData)
-    // if(validation.error) {
-    //   console.log(validation.error)
-    //   const error = new Error('Data Entered is not valid');
+    const validation = validateUser(userData);
+    if (validation.error) {
+      console.log(validation.error);
+      const error = new Error('Data Entered is not valid');
 
-    //   error.stack = 404;
-    //   throw error;
-    // }
+      error.stack = 404;
+      throw error;
+    }
     const collegeName = await collegeControl.getCollegeById(userData.collegeId);
     const salt_rounds = process.env.SALT_ROUND;
     console.log(salt_rounds);

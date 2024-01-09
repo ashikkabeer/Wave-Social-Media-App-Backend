@@ -42,7 +42,6 @@ class PostControls {
   // add the user data in the post schema
   retrieveAll = async (req, res) => {
     const posts = await Post.find({}).exec();
-    console.log(posts)
     if (!posts) {
       const error = new Error('Unable to retrieve data');
       error.stack = 404;
