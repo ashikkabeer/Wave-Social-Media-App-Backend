@@ -1,30 +1,29 @@
-# Wave: Social Media App for Students
-### [Link to Documentation](https://ashikkabeer.notion.site/Social-Media-App-Documentaion-bddbf5b9377043b8b81a3e7dccb8e526)
+# 👥Wave: Social Media App for Students
+### 📖[Link to Documentation](https://ashikkabeer.notion.site/Social-Media-App-Documentaion-bddbf5b9377043b8b81a3e7dccb8e526)
 
 
-### [Live Link](https://fit-legacy-399206.uc.r.appspot.com/login)
-### Hosted on App Engine Google Cloud
+### 📖[Live Link](https://fit-legacy-399206.uc.r.appspot.com/login)
+### 💻Hosted on App Engine Google Cloud
 ![gif](https://media.giphy.com/media/l1J9IFcDSYcAeHH5m/giphy.gif)
 
-## Description
-
+## 💻Description
 It is a social media platform designed exclusively for students. It offers a space for students to connect, share information, and engage in discussions related to their colleges and academic interests. This Node.js backend-focused project powers the core functionality of this app.
 
-## Table of Contents
+## 💻Table of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
 - [Features](#features)
 
-## Getting Started
-### Prerequisites
+## 🔰Getting Started
+### 📜Prerequisites
 Before setting up this app, ensure you have the following installed:
 
 1. Node.js and npm (Node Package Manager)
 2. MongoDB Database
 3. Git (optional, but recommended)
 
-## Installation
+## 💿Installation
 
 ```bash
 # Clone the repository to your local machine
@@ -42,7 +41,7 @@ npm install
 npm start
 ```
 
-## Usage
+## 📶Usage
 
 - User registration and authentication.
 - Creating and sharing posts.
@@ -68,7 +67,7 @@ npm start
 1. Search for colleges name and follow.
 ```
 
-## Project Structure
+## 📰Project Structure
 
 Explain the organization of your project's source code. Describe the purpose of each major directory and file.
 
@@ -129,7 +128,7 @@ MONGO_URI = <mongo-uri>
 PORT = 3000
 SESSION_SECRET = <Random String>
 ```
-## Features
+## 🪅Features
 
 This app offers a range of features to enhance the student experience:
 
