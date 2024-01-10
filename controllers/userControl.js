@@ -4,34 +4,24 @@ const { extractDate } = require('../util/timeConvertHelper');
 let collegeControl = require('./collegeControl');
 const CloudControls = require('./cloudControl');
 const authControl = require('./authControl');
+const UserServices = require('../service/userServices');
+const collegeServices = require('../service/collegeServices');
 class UserControls {
-  getUsername = (req) => {
-    return req.params.username;
-  };
   updateCoverPicture = async (req, res) => {
-    const username = this.getUsername(req);
+    const response = await UserServices.updateCoverPictureService();
   };
   updateProfilePicture = async (req, res) => {
-    const username = this.getUsername(req);
-    const imageUrl = await CloudControls.uploadImagetoCloud(req.file.buffer);
-    const user = await User.findOneAndUpdate({username:username},{profilePhoto:imageUrl})
-    console.log(user)
-    res.redirect(`user/${username}/edit/profile`)
+    const username = await UserServices.getUsernameFromParams(req);
+    res.redirect(`user/${username}/edit/profile`);
   };
   updateProfile = async (req, res) => {
-    
+    const response = await UserServices.updateProfileService();
   };
 
-  updatePostList = async (authorId, tweetDataId) => {
-    await User.findByIdAndUpdate(authorId, {
-      $push: { posts: tweetDataId },
-    });
-  };
   renderEdit = async (req, res, template) => {
-    const username = this.getUsername(req);
-
+    const username = await UserServices.getUsernameFromParams(req);
     if (template === 'editProfile') {
-      const college = await collegeControl.getAllCollege();
+      const college = await collegeServices.getAllCollege();
       return res.render(template, { username, college });
     }
     res.render(template, { username, loggedIn: true });
@@ -45,19 +35,9 @@ class UserControls {
     return user;
   };
   userInfo = async (req, res) => {
-    const username = this.getUsername(req);
-    let userFromDb = await this.getUserByUsername(username);
-    
-    const user = {
-      name: userFromDb.name,
-      username: userFromDb.username,
-      collegeId: userFromDb.collegeId,
-      collegeName: userFromDb.collegeName,
-      posts: userFromDb.posts,
-      profilePhoto: userFromDb.profilePhoto || null,
-      coverPhoto: userFromDb.coverPhoto || null,
-    };
-    const isAuthorized = await authControl.isAuthorized(req,username);
+    const response = await UserServices.userInfoService(req);
+    const isAuthorized = response.isAuthorized;
+    const user = response.user;
     res.render('userProfile', { isAuthorized, user, loggedIn: true });
   };
 }

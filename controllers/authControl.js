@@ -1,31 +1,9 @@
-require('dotenv').config();
-const { comparePassword, hashPassword } = require('../util/hashingHelper');
-const { User } = require('../model/user');
-const { validateUser } = require('../util/dataValidation/validation');
-let collegeControl = require('./collegeControl');
-const jwt = require('jsonwebtoken');
-
+const authServices = require('../service/authServices');
+const collegeServices = require('../service/collegeServices');
 class authControls {
-  isAuthorized = async (req, username) => {
-    if (req.session.user.username === username) {
-      return true;
-    }
-    return false;
-  };
-  findUserByUsername = async (username) => {
-    const foundUser = await User.findOne({ username: username });
-    if (!foundUser) {
-      const error = new Error('User not found');
-      error.status = 404;
-      throw error;
-    }
-    return foundUser;
-  };
   login = async (req, res) => {
-    const user = await this.findUserByUsername(req.body.username);
-    await comparePassword(req.body.password, user.password);
-    req.session.user = user;
-    if (req.session) {
+    const response = await authServices.loginService(req);
+    if (response) {
       return res.status(200).redirect('/post');
     } else {
       throw new Error('Authentication Failed');
@@ -33,41 +11,12 @@ class authControls {
   };
   signUp = async (req, res) => {
     const userData = req.body;
-    const validation = validateUser(userData);
-    if (validation.error) {
-      console.log(validation.error);
-      const error = new Error('Data Entered is not valid');
-
-      error.stack = 404;
-      throw error;
-    }
-    const collegeName = await collegeControl.getCollegeById(userData.collegeId);
-    const salt_rounds = process.env.SALT_ROUND;
-    console.log(salt_rounds);
-    const hashedPassword = await hashPassword(userData.password, 10);
-    const users = {
-      name: userData.name,
-      username: userData.username,
-      password: hashedPassword,
-      email: userData.email,
-      collegeId: userData.collegeId,
-      collegeName: collegeName,
-      gender: userData.gender,
-    };
-    console.log(users);
-    users.collegeName = await collegeControl.getCollegeById(users.collegeId);
-    const user = await User.create(users);
-    if (!user) {
-      const error = new Error('Signup Failed');
-      error.stack = 404;
-      throw error;
-    }
-    await collegeControl.updateColleges(userData.collegeId, user._id);
+    const response = await authServices.signUpService(userData);
     res.status(200).redirect('/');
   };
 
   renderSignup = async (req, res) => {
-    const college = await collegeControl.getAllCollege();
+    const college = await collegeServices.getAllCollege();
     res.render('signup', { college });
   };
   renderLogin = async (req, res) => {
