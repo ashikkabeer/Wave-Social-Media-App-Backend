@@ -1,9 +1,5 @@
 const { User } = require('../model/user');
-const College = require('../model/college');
-const { extractDate } = require('../util/timeConvertHelper');
-let collegeControl = require('./collegeControl');
-const CloudControls = require('./cloudControl');
-const authControl = require('./authControl');
+
 const UserServices = require('../service/userServices');
 const collegeServices = require('../service/collegeServices');
 class UserControls {

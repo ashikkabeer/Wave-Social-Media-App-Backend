@@ -1,6 +1,7 @@
 const { User } = require('../model/user');
 const authServices = require('./authServices');
 const CloudServices = require('./cloudServices');
+
 class UserServices {
   getUsernameFromParams = (req) => {
     return req.params.username;

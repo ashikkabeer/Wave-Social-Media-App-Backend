@@ -78,12 +78,15 @@ Explain the organization of your project's source code. Describe the purpose of 
     - collegeControl.js
     - imageUpload.js
     - postControl.js
+    - cloudControl.js
     - userControl.js
+  - /middlewares
+    - authMiddleware.js
+    - errorHandler.js
   - /config
     -db.js
   - /model
     - college.js
-    - message.js
     - post.js
     - user.js
   - /routes
@@ -92,7 +95,15 @@ Explain the organization of your project's source code. Describe the purpose of 
     - index.js
     - postRoutes.js
     - userRoutes.js
+  - /service
+    - authServices.js
+    - cloudServices.js
+    - collegeServices.js
+    - postServices.js
+    - userServices.js
   - /util
+    - /dataValidation
+      - validation.js
     - hashingHelper.js
     - timeConvertHelper.js
     - tryCatch.js
@@ -127,6 +138,9 @@ Explain the organization of your project's source code. Describe the purpose of 
 MONGO_URI = <mongo-uri>
 PORT = 3000
 SESSION_SECRET = <Random String>
+PROJECT_ID = <GCP PROJECT ID>
+KEY_FILE = <KEY FILE LOCATION>
+SALT_ROUND = <FOR HASHING>
 ```
 ## 🪅Features
 

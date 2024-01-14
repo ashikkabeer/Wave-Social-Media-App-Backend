@@ -1,7 +1,4 @@
-const College = require('../model/college');
-const Post = require('../model/post')
 
-const { User } = require('../model/user');
 const collegeServices = require('../service/collegeServices');
 class CollegeControls {
 

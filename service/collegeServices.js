@@ -1,6 +1,6 @@
 const College = require('../model/college');
 const Post = require('../model/post');
-
+const { User } = require('../model/user');
 class collegeServices {
   getAllCollege = async () => {
     const colleges = await College.find({}).exec();
