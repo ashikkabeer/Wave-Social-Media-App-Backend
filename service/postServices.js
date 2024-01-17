@@ -1,5 +1,5 @@
 require('dotenv').config();
-const Post = require('../model/post');
+const Post = require('../schema/post');
 const CloudServices = require('./cloudServices');
 const UserServices = require('./userServices');
 

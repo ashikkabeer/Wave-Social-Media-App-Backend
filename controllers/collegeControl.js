@@ -9,6 +9,7 @@ class CollegeControls {
 
 
 
+  
   addCollege = async (req, res) => {
     const college = await collegeServices.addCollegeService(req.body)
     if (!college) {

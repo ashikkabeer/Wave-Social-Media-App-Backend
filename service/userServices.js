@@ -1,4 +1,4 @@
-const { User } = require('../model/user');
+const { User } = require('../schema/user');
 const authServices = require('./authServices');
 const CloudServices = require('./cloudServices');
 

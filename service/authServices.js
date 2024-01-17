@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { comparePassword, hashPassword } = require('../util/hashingHelper');
-const { User } = require('../model/user');
+const { User } = require('../schema/user');
 const { validateUser } = require('../util/dataValidation/validation');
 const collegeServices = require('./collegeServices');
 class authServices {

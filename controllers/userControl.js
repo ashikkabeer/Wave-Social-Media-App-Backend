@@ -1,4 +1,4 @@
-const { User } = require('../model/user');
+const { User } = require('../schema/user');
 
 const UserServices = require('../service/userServices');
 const collegeServices = require('../service/collegeServices');
