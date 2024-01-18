@@ -86,6 +86,10 @@ Explain the organization of your project's source code. Describe the purpose of 
   - /config
     -db.js
   - /model
+    - collegeModels.js
+    - postModels.js
+    - userModels.js 
+  - /schema
     - college.js
     - post.js
     - user.js
