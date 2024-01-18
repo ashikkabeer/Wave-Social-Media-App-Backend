@@ -1,8 +1,7 @@
 require('dotenv').config();
-const Post = require('../schema/post');
 const CloudServices = require('./cloudServices');
 const UserServices = require('./userServices');
-
+const PostModels = require('../models/postModels');
 class PostServices {
   createPostService = async (req, res) => {
     if (!req.session || !req.session.user || !req.session.user._id) {
@@ -11,7 +10,6 @@ class PostServices {
     if (!req.body.title || !req.body.content) {
       throw new Error('Title and content are required');
     }
-    const authorId = req.session.user._id;
     let data = {
       title: req.body.title,
       content: req.body.content,
@@ -26,13 +24,13 @@ class PostServices {
 
       data.images = imageUrl;
     }
-    const post = await Post.create(data);
+    const post = await PostModels.createPost(data);
     const response = await UserServices.updatePostList(post.authorId, post._id);
     return response;
   };
 
   renderAllPostsService = async () => {
-    const posts = await Post.find({}).exec();
+    const posts = await PostModels.getAllPosts();
     if (!posts) {
       const error = new Error('Unable to retrieve data');
       error.stack = 404;

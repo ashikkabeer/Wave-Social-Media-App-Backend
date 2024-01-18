@@ -1,8 +1,8 @@
 require('dotenv').config();
 const { comparePassword, hashPassword } = require('../util/hashingHelper');
-const { User } = require('../schema/user');
 const { validateUser } = require('../util/dataValidation/validation');
 const collegeServices = require('./collegeServices');
+const UserModels = require('../models/userModels');
 class authServices {
   isAuthorized = async (req, username) => {
     if (req.session.user.username === username) {
@@ -11,18 +11,18 @@ class authServices {
     return false;
   };
 
-  findUserByUsername = async (username) => {
-    const foundUser = await User.findOne({ username: username });
-    if (!foundUser) {
-      const error = new Error('User not found');
-      error.status = 404;
-      throw error;
-    }
-    return foundUser;
-  };
+  // findUserByUsername = async (username) => {
+  //   const foundUser = await User.findOne({ username: username });
+  //   if (!foundUser) {
+  //     const error = new Error('User not found');
+  //     error.status = 404;
+  //     throw error;
+  //   }
+  //   return foundUser;
+  // };
 
   loginService = async (req) => {
-    const user = await this.findUserByUsername(req.body.username);
+    const user = await UserModels.findUserByUsername(req.body.username)
     await comparePassword(req.body.password, user.password);
     req.session.user = user;
     return req.session.user;
@@ -61,7 +61,7 @@ class authServices {
     };
     // users.collegeName = await collegeControl.getCollegeById(users.collegeId);
 
-    const user = await User.create(users);
+    const user = await UserModels.createUser(users)
     if (!user) {
       const error = new Error('Signup Failed');
       error.stack = 404;

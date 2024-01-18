@@ -1,6 +1,7 @@
-const { User } = require('../schema/user');
 const authServices = require('./authServices');
 const CloudServices = require('./cloudServices');
+const UserModels = require('../models/userModels');
+
 
 class UserServices {
   getUsernameFromParams = (req) => {
@@ -10,30 +11,28 @@ class UserServices {
   updateProfilePictureService = async (req) => {
     const username = this.getUsernameFromParams(req);
     const imageUrl = await CloudServices.uploadImagetoCloud(req.file.buffer);
-    const user = await User.findOneAndUpdate(
-      { username: username },
-      { profilePhoto: imageUrl }
+    const user =await UserModels.findUserByIdAndUpdateProfilePhoto(
+      username,
+      imageUrl
     );
     return user;
   };
 
   updateProfileService = async () => {};
   updatePostList = async (authorId, tweetDataId) => {
-    await User.findByIdAndUpdate(authorId, {
-      $push: { posts: tweetDataId },
-    });
+    return await UserModels.findUserByIdAndUpdatePostList(authorId, tweetDataId);
   };
-  getUserByUsername = async (username) => {
-    let user = await User.findOne({ username });
-    if (!user) {
-      throw new Error('User not found');
-    }
-    return user;
-  };
+  // getUserByUsername = async (username) => {
+  //   let user = UserModels.findUserByUsername(username)
+  //   if (!user) {
+  //     throw new Error('User not found');
+  //   }
+  //   return user;
+  // };
 
   userInfoService = async (req) => {
     const username = this.getUsernameFromParams(req);
-    let userFromDb = await this.getUserByUsername(username);
+    let userFromDb = await UserModels.findUserByUsername(username)
     const user = {
       name: userFromDb.name,
       username: userFromDb.username,
