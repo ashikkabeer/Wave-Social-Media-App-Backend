@@ -23,13 +23,6 @@ class UserControls {
     res.render(template, { username, loggedIn: true });
   };
 
-  getUserByUsername = async (username) => {
-    let user = await User.findOne({ username });
-    if (!user) {
-      throw new Error('User not found');
-    }
-    return user;
-  };
   userInfo = async (req, res) => {
     const response = await UserServices.userInfoService(req);
     const isAuthorized = response.isAuthorized;

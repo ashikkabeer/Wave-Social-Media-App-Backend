@@ -1,6 +1,7 @@
 var express = require('express');
-var router = express.Router();
 const tryCatch = require('../util/tryCatch');
+
+var router = express.Router();
 let authControls = require('../controllers/authControl');
 
 router.get('/', (req, res) => {

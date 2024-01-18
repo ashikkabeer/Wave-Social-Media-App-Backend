@@ -1,8 +1,10 @@
 var express = require('express');
+const tryCatch = require('../util/tryCatch');
 var router = express.Router();
 var UserControls = require('../controllers/userControl');
+
 const authMiddlewares = require('../middlewares/authMiddleware');
-const tryCatch = require('../util/tryCatch');
+
 
 
 

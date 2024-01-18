@@ -1,5 +1,7 @@
 
 const collegeServices = require('../service/collegeServices');
+
+
 class CollegeControls {
 
   searchCollege = async (req, res) => {

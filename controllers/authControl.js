@@ -1,5 +1,7 @@
 const authServices = require('../service/authServices');
 const collegeServices = require('../service/collegeServices');
+
+
 class authControls {
 
 

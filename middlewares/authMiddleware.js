@@ -1,5 +1,5 @@
-require('dotenv').config();
-const jwt = require('jsonwebtoken');
+
+
 class authMiddlewares {
   static isAuthenticated(req, res, next) {
     if (req.session && req.session.user) {

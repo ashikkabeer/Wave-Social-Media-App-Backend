@@ -1,4 +1,6 @@
 const PostServices = require('../service/postServices');
+
+
 class PostControls {
   constructor() {}
   renderUploadForm = async (req, res) => {

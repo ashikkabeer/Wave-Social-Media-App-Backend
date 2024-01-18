@@ -1,8 +1,11 @@
 require('dotenv').config();
+
 const { comparePassword, hashPassword } = require('../util/hashingHelper');
 const { validateUser } = require('../util/dataValidation/validation');
+
 const collegeServices = require('./collegeServices');
 const UserModels = require('../models/userModels');
+
 class authServices {
   isAuthorized = async (req, username) => {
     if (req.session.user.username === username) {

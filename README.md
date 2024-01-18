@@ -4,7 +4,7 @@
 
 ### 📖[Live Link](https://fit-legacy-399206.uc.r.appspot.com/login)
 ### 💻Hosted on App Engine Google Cloud
-![gif](https://media.giphy.com/media/l1J9IFcDSYcAeHH5m/giphy.gif)
+![architecture](./public/images/mvc_process.svg)
 
 ## 💻Description
 It is a social media platform designed exclusively for students. It offers a space for students to connect, share information, and engage in discussions related to their colleges and academic interests. This Node.js backend-focused project powers the core functionality of this app.
