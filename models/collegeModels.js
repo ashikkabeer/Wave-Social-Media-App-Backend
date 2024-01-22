@@ -21,7 +21,15 @@ class CollegeModels {
             $push: { studentIds: studentsId },
           });
     }
-
+    findCollegeByIdAndUpdatePostList = async (collegeId, postId) => {
+       try {
+        return await College.findByIdAndUpdate(collegeId, {
+            $push: { posts: postId },
+          });
+       } catch (error) {
+        console.log(error)
+       }
+      };
 
 //college information
 
@@ -31,4 +39,4 @@ class CollegeModels {
 
 
 
-module.export = new CollegeModels()
+module.exports = new CollegeModels()

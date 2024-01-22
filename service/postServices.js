@@ -1,7 +1,7 @@
-require('dotenv').config();
 const CloudServices = require('./cloudServices');
 const UserServices = require('./userServices');
 const PostModels = require('../models/postModels');
+const collegeServices = require('../service/collegeServices')
 class PostServices {
   createPostService = async (req, res) => {
     if (!req.session || !req.session.user || !req.session.user._id) {
@@ -20,12 +20,13 @@ class PostServices {
     };
     if (req.file) {
       console.log('image found');
-      const imageUrl = await CloudServices.uploadImagetoCloud(req.file.buffer);
+      const imageUrl = await CloudServices.uploadImagetoCloudService(req.file.buffer);
 
       data.images = imageUrl;
     }
     const post = await PostModels.createPost(data);
     const response = await UserServices.updatePostList(post.authorId, post._id);
+    await collegeServices.updatePostIdsInCollegeDB(post.authorCollegeId, post._id)
     return response;
   };
 

@@ -7,7 +7,7 @@ class PostControls {
     res.render('addPost', { loggedIn: true });
   };
   create = async (req, res) => {
-    const response = await PostServices.createPostService(req);
+    await PostServices.createPostService(req);
     return res.status(200).redirect('/');
   };
 

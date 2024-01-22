@@ -6,8 +6,6 @@ var UserControls = require('../controllers/userControl');
 const authMiddlewares = require('../middlewares/authMiddleware');
 
 
-
-
 router.use(authMiddlewares.isAuthenticated);
 
 router.get('/:username', tryCatch(UserControls.userInfo)); //get userinfo
@@ -18,6 +16,5 @@ router.get('/:username/edit/profile/cp/', tryCatch((req, res) => UserControls.re
 router.post('/:username/edit/profile', tryCatch(UserControls.updateProfile)); //update profile
 router.post('/:username/edit/profile/dp', tryCatch(UserControls.updateProfilePicture)); //update dp
 router.post('/:username/edit/profile/cp',tryCatch(UserControls.updateCoverPicture)); //update cp
-//
 
 module.exports = router;

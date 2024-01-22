@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>WaveApp</title>
-  <link rel="stylesheet" href="/public/output.css">
+    <link rel="stylesheet" href="/public/output.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
@@ -52,34 +52,37 @@
     </style>
 </head>
 
-<body>
+<body class=" no-underline text-black">
     <div class="index">
         <section>
             {{#each data}}
-            <div class="card">
+            <div class="card ">
                 <div class="card-header">
                     <div class="users ms-0 text-start">
-                        <a class="text-decoration-none card-text  " href="user/{{authorUsername}}">@{{authorUsername}}
-                            <br></a>
-                        <a class="text-decoration-none card-text text-sm"
-                            href="college/{{authorCollegeId}}">{{authorCollegeName}}</a>
+                        {{!-- <a class="no-underline " href="user/{{authorUsername}}">@{{authorUsername}}
+                            <br></a> --}}
+                        <a class="no-underline text-black text-decoration-none" href="college/{{authorCollegeId}}">{{authorCollegeName}}</a>
                     </div>
                 </div>
                 <div class="content">
                     <div class="card-body">
                         <div class="text-start">
-                            <h5 class="card-title">{{title}}</h5>
-                            <p class="card-text">{{content}}</p>
+                            <h5 class=" card-title">{{title}}</h5>
+                            <p class=" card-text">{{content}}</p>
                         </div>
 
-                        <div class="ratio ratio-16x9">
+                        {{#if image}}
+                        <div class="my-4 border-4 border-white ratio ratio-16x9">
                             <img class="card-img-top" src="{{image}}" alt="Card image cap">
                         </div>
+                        {{/if}}
                     </div>
                 </div>
-                <div class="d-flex justify-content-around mt-3 "><p><a href="#" class="text-center like-button btn btn-primary">Like</a></p>
-                <p><a href="#" class="text-center like-button btn btn-primary">Share</a></p></div>
-                
+                <div class="d-flex justify-content-around mt-3 ">
+                    <p><a href="#" class="text-center like-button btn btn-primary">Like</a></p>
+                    <p><a href="#" class="text-center like-button btn btn-primary">Share</a></p>
+                </div>
+
             </div>
             {{/each}}
         </section>

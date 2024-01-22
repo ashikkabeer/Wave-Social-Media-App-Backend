@@ -20,15 +20,9 @@ class UserServices {
 
   updateProfileService = async () => {};
   updatePostList = async (authorId, tweetDataId) => {
-    return await UserModels.findUserByIdAndUpdatePostList(authorId, tweetDataId);
+    await UserModels.findUserByIdAndUpdatePostList(authorId, tweetDataId);
+    await UserModels.findUserByIdAndUpdatePostList(authorId, tweetDataId);
   };
-  // getUserByUsername = async (username) => {
-  //   let user = UserModels.findUserByUsername(username)
-  //   if (!user) {
-  //     throw new Error('User not found');
-  //   }
-  //   return user;
-  // };
 
   userInfoService = async (req) => {
     const username = this.getUsernameFromParams(req);

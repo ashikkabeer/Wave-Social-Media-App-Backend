@@ -4,7 +4,6 @@ const collegeServices = require('../service/collegeServices');
 
 class authControls {
 
-
   login = async (req, res) => {
     const response = await authServices.loginService(req);
     if (response) {
@@ -15,15 +14,11 @@ class authControls {
   };
 
 
-
-
   signUp = async (req, res) => {
     const userData = req.body;
     const response = await authServices.signUpService(userData);
     res.status(200).redirect('/');
   };
-
-
 
 
   renderSignup = async (req, res) => {
@@ -32,13 +27,9 @@ class authControls {
   };
 
 
-
-
   renderLogin = async (req, res) => {
     res.render('login');
   };
-
-
 
   
   logout = async (req, res) => {

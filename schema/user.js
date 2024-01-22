@@ -1,4 +1,3 @@
-const { boolean, string } = require('joi');
 const { Schema, model } = require('mongoose');
 
 const userSchema = new Schema({
@@ -32,9 +31,6 @@ const userSchema = new Schema({
   profilePhoto: {
     type: String,
   },
-  coverPhoto: {
-    type: String,
-  },
   bio: {
     type: String,
   },
@@ -52,12 +48,6 @@ const userSchema = new Schema({
     enum: ['administrator', 'user'],
     default: 'user',
   },
-  friends: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-    },
-  ],
   posts: [
     {
       type: Schema.Types.ObjectId,

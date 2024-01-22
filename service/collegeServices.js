@@ -1,5 +1,6 @@
 const PostModels = require('../models/postModels')
 const CollegeModels = require('../models/collegeModels')
+const userModels  = require('../models/userModels')
 class collegeServices {
   getAllCollege = async () => {
     const colleges = await CollegeModels.getAllCollege();
@@ -47,7 +48,7 @@ class collegeServices {
     console.log('in the findStudents' + typeof studentIds);
     const students = [];
     for (const studentId of studentIds) {
-      const student = await userModels.findUserById(studentId)
+      const student = await userModels.findUserbyId(studentId)
       if (student) {
         const { id, name, username, profilePhoto, posts } = student;
         await this.getCollegePosts(posts);
@@ -75,11 +76,16 @@ class collegeServices {
     if (!college) {
       throw new Error('College not found');
     }
-    let { Collegename, location, establishedYear, studentIds } = college;
+    console.log(college)
+    let { Collegename, location, establishedYear, postIds } = college;
     college = { Collegename, location, establishedYear };
-    const students = await this.findStudents(studentIds);
-    return { college, students };
+    let posts = await this.getCollegePosts(postIds);
+    console.log(posts)
+    return { college, posts };
   };
+  updatePostIdsInCollegeDB = async (collegeId, postId) => {
+    return await CollegeModels.findCollegeByIdAndUpdatePostList(collegeId, postId)
+  }
 }
 
 module.exports = new collegeServices();

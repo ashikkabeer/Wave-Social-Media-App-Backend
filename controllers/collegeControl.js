@@ -8,9 +8,6 @@ class CollegeControls {
     const key = req.query.key;
     //search in database
   };
-
-
-
   
   addCollege = async (req, res) => {
     const college = await collegeServices.addCollegeService(req.body)
@@ -26,6 +23,7 @@ class CollegeControls {
     }
   };
 
+  
   renderAddColleges = async (req, res) => {
     let permission = false;
     const role = 'user';
@@ -37,8 +35,6 @@ class CollegeControls {
   };
 
 
-
-
   //completely change this function. add a schema to get the post id 
   // to college db. each college have a list
 
@@ -47,7 +43,7 @@ class CollegeControls {
     const response = await collegeServices.collegeInfoService(collegeId)
     const college = response.college
     const students = response.students
-    await res.render('collegeProfile', { college, students, loggedIn: true });
+    return await res.render('collegeProfile', { college, students, loggedIn: true });
   };
 }
 

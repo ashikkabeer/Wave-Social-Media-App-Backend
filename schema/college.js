@@ -4,7 +4,6 @@ const collegeSchema = new Schema({
   Collegename: {
     type: String,
     required: true,
-    // unique: true,
   },
   location: {
     type: String,
