@@ -7,14 +7,14 @@ const collegeServices = require('./collegeServices');
 const UserModels = require('../models/userModels');
 
 class authServices {
-  isAuthorized = async (req, username) => {
+  static isAuthorized = async (req, username) => {
     if (req.session.user.username === username) {
       return true;
     }
     return false;
   };
 
-  // findUserByUsername = async (username) => {
+  // static findUserByUsername = async (username) => {
   //   const foundUser = await User.findOne({ username: username });
   //   if (!foundUser) {
   //     const error = new Error('User not found');
@@ -24,14 +24,14 @@ class authServices {
   //   return foundUser;
   // };
 
-  loginService = async (req) => {
+  static loginService = async (req) => {
     const user = await UserModels.findUserByUsername(req.body.username)
     await comparePassword(req.body.password, user.password);
     req.session.user = user;
     return req.session.user;
   };
 
-  signUpService = async (userData) => {
+  static signUpService = async (userData) => {
     const collegeName = await collegeServices.getCollegeById(
       userData.collegeId
     );
@@ -49,7 +49,7 @@ class authServices {
 
     const validation = validateUser(users);
     if (validation.error) {
-      const error = new Error('Data Entered is not valid');
+    const error = new Error('Data Entered is not valid');
       error.stack = 404;
       throw error;
     }
@@ -73,9 +73,9 @@ class authServices {
     await collegeServices.updateColleges(userData.collegeId, user._id);
   };
 
-  renderSignupService = async () => {
+  static renderSignupService = async () => {
     const college = await collegeServices.getAllCollege();
   };
 }
 
-module.exports = new authServices();
+module.exports = authServices;

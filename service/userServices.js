@@ -4,19 +4,22 @@ const UserModels = require('../models/userModels');
 
 
 class UserServices {
-  getUsernameFromParams = (req) => {
+  static getUsernameFromParams = (req) => {
     return req.params.username;
   };
-  updateCoverPictureService = async () => {};
-  updateProfilePictureService = async (req) => {
-    const username = this.getUsernameFromParams(req);
-    const imageUrl = await CloudServices.uploadImagetoCloud(req.file.buffer);
-    const user =await UserModels.findUserByIdAndUpdateProfilePhoto(
-      username,
-      imageUrl
-    );
-    return user;
-  };
+
+  /* Anonymous users: no need for profile photo */
+  
+  // updateCoverPictureService = async () => {};
+  // updateProfilePictureService = async (req) => {
+  //   const username = this.getUsernameFromParams(req);
+  //   const imageUrl = await CloudServices.uploadImagetoCloud(req.file.buffer);
+  //   const user =await UserModels.findUserByIdAndUpdateProfilePhoto(
+  //     username,
+  //     imageUrl
+  //   );
+  //   return user;
+  // };
 
   updateProfileService = async () => {};
   updatePostList = async (authorId, tweetDataId) => {
@@ -24,7 +27,7 @@ class UserServices {
     await UserModels.findUserByIdAndUpdatePostList(authorId, tweetDataId);
   };
 
-  userInfoService = async (req) => {
+  static userInfoService = async (req) => {
     const username = this.getUsernameFromParams(req);
     let userFromDb = await UserModels.findUserByUsername(username)
     const user = {
@@ -33,12 +36,10 @@ class UserServices {
       collegeId: userFromDb.collegeId,
       collegeName: userFromDb.collegeName,
       posts: userFromDb.posts,
-      profilePhoto: userFromDb.profilePhoto || null,
-      coverPhoto: userFromDb.coverPhoto || null,
     };
     const isAuthorized = await authServices.isAuthorized(req, username);
     return { isAuthorized, user };
   };
 }
 
-module.exports = new UserServices();
+module.exports = UserServices;

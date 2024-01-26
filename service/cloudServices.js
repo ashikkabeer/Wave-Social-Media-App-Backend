@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const { Storage } = require('@google-cloud/storage');
 
 class CloudServices {
-  uploadImagetoCloudService = (buffer) => {
+  static uploadImagetoCloudService = (buffer) => {
     let projectId = process.env.PROJECT_ID;
     let keyFilename = process.env.KEY_FILE;
 

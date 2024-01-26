@@ -3,32 +3,32 @@ const { User } = require('../schema/user');
 const UserServices = require('../service/userServices');
 const collegeServices = require('../service/collegeServices');
 class UserControls {
-  updateCoverPicture = async (req, res) => {
+  static updateCoverPicture = async (req, res) => {
     const response = await UserServices.updateCoverPictureService();
   };
-  updateProfilePicture = async (req, res) => {
+  static updateProfilePicture = async (req, res) => {
     const username = await UserServices.getUsernameFromParams(req);
-    res.redirect(`user/${username}/edit/profile`);
+    return res.redirect(`user/${username}/edit/profile`);
   };
-  updateProfile = async (req, res) => {
-    const response = await UserServices.updateProfileService();
+  static updateProfile = async (req, res) => {
+    return await UserServices.updateProfileService();
   };
 
-  renderEdit = async (req, res, template) => {
+  static renderEdit = async (req, res, template) => {
     const username = await UserServices.getUsernameFromParams(req);
     if (template === 'editProfile') {
       const college = await collegeServices.getAllCollege();
       return res.render(template, { username, college });
     }
-    res.render(template, { username, loggedIn: true });
+    return res.render(template, { username, loggedIn: true });
   };
 
-  userInfo = async (req, res) => {
+  static userInfo = async (req, res) => {
     const response = await UserServices.userInfoService(req);
     const isAuthorized = response.isAuthorized;
     const user = response.user;
-    res.render('userProfile', { isAuthorized, user, loggedIn: true });
+    return res.render('userProfile', { isAuthorized, user, loggedIn: true });
   };
 }
 
-module.exports = new UserControls();
+module.exports = UserControls;

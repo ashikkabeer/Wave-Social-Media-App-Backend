@@ -1,9 +1,9 @@
 const CloudServices = require('./cloudServices');
 const UserServices = require('./userServices');
 const PostModels = require('../models/postModels');
-const collegeServices = require('../service/collegeServices')
+const collegeServices = require('../service/collegeServices');
 class PostServices {
-  createPostService = async (req, res) => {
+  static createPostService = async (req, res) => {
     if (!req.session || !req.session.user || !req.session.user._id) {
       throw new Error('user not authenticated');
     }
@@ -20,17 +20,22 @@ class PostServices {
     };
     if (req.file) {
       console.log('image found');
-      const imageUrl = await CloudServices.uploadImagetoCloudService(req.file.buffer);
+      const imageUrl = await CloudServices.uploadImagetoCloudService(
+        req.file.buffer
+      );
 
       data.images = imageUrl;
     }
     const post = await PostModels.createPost(data);
     const response = await UserServices.updatePostList(post.authorId, post._id);
-    await collegeServices.updatePostIdsInCollegeDB(post.authorCollegeId, post._id)
+    await collegeServices.updatePostIdsInCollegeDB(
+      post.authorCollegeId,
+      post._id
+    );
     return response;
   };
 
-  renderAllPostsService = async () => {
+  static renderAllPostsService = async () => {
     const posts = await PostModels.getAllPosts();
     if (!posts) {
       const error = new Error('Unable to retrieve data');
@@ -58,4 +63,4 @@ class PostServices {
   };
 }
 
-module.exports = new PostServices();
+module.exports = PostServices;

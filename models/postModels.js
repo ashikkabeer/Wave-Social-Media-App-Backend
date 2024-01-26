@@ -1,17 +1,18 @@
 const Post = require('../schema/post');
 
 class PostModels {
-  getPostById = async (postId) => {
+  static getPostById = async (postId) => {
     return await Post.findById(postId);
   };
 
-  createPost = async (post) => {
+  static createPost = async (post) => {
     return await Post.create(post);
   };
 
-  getAllPosts = async () => {
-    return await Post.find({}).exec();
+  static getAllPosts = async () => {
+    // return await Post.find({}).exec();
+    return await Post.find({}).sort({createdAt: -1}).exec();
   };
 }
 
-module.exports = new PostModels();
+module.exports = PostModels;

@@ -1,8 +1,8 @@
 const PostModels = require('../models/postModels')
 const CollegeModels = require('../models/collegeModels')
-const userModels  = require('../models/userModels')
+const userModels  = require('../models/userModels');
 class collegeServices {
-  getAllCollege = async () => {
+  static getAllCollege = async () => {
     const colleges = await CollegeModels.getAllCollege();
     const college = await Promise.all(
       colleges.map((college) => {
@@ -16,7 +16,7 @@ class collegeServices {
     return college;
   };
 
-  getCollegeById = async (collegeId) => {
+  static getCollegeById = async (collegeId) => {
     try {
       console.log(collegeId);
       const college = await CollegeModels.getCollegeById(collegeId)
@@ -31,12 +31,12 @@ class collegeServices {
       console.log(error);
     }
   };
-  addCollegeService = async (college) => {
+  static addCollegeService = async (college) => {
     const response = await CollegeModels.createCollege(college)
     return response;
   };
 
-  updateColleges = async (collegeId, studentsId) => {
+  static updateColleges = async (collegeId, studentsId) => {
     const update = await CollegeModels.addStudentsToCollegeById(collegeId, studentsId)
     if (!update) {
       const error = new Error('Failed to update students: ');
@@ -44,20 +44,20 @@ class collegeServices {
       throw error;
     }
   };
-  findStudents = async (studentIds) => {
+  static findStudents = async (studentIds) => {
     console.log('in the findStudents' + typeof studentIds);
     const students = [];
     for (const studentId of studentIds) {
       const student = await userModels.findUserbyId(studentId)
       if (student) {
-        const { id, name, username, profilePhoto, posts } = student;
+        const { id, name, username, posts } = student;
         await this.getCollegePosts(posts);
-        students.push({ id, name, username, profilePhoto, posts });
+        students.push({ id, name, username, posts });
       }
     }
     return students;
   };
-  getCollegePosts = async (postIds) => {
+  static getCollegePosts = async (postIds) => {
     console.log('In the getCollegePosts function');
     const posts = [];
     for (const postId of postIds) {
@@ -71,7 +71,7 @@ class collegeServices {
     return posts;
   };
 
-  collegeInfoService = async (collegeId) => {
+  static collegeInfoService = async (collegeId) => {
     let college = await CollegeModels.getCollegeById(collegeId);
     if (!college) {
       throw new Error('College not found');
@@ -83,9 +83,14 @@ class collegeServices {
     console.log(posts)
     return { college, posts };
   };
-  updatePostIdsInCollegeDB = async (collegeId, postId) => {
+  static updatePostIdsInCollegeDB = async (collegeId, postId) => {
     return await CollegeModels.findCollegeByIdAndUpdatePostList(collegeId, postId)
+  }
+
+
+  static searchCollegeUsingName = async (searchKey) => {
+    return await CollegeModels.searchCollegeUsingName(searchKey)
   }
 }
 
-module.exports = new collegeServices();
+module.exports = collegeServices;
