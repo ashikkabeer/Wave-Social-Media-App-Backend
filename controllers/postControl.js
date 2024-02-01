@@ -15,7 +15,8 @@ class PostControls {
     const data = await PostServices.renderAllPostsService();
     console.log(data);
     // const permission =true; check the role === administrator -> set permission true
-    res.render('index', { data, loggedIn: true });
+    return res.send(data)
+    // res.render('index', { data, loggedIn: true });
   };
 }
 

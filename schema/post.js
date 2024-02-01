@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
-const College = require('./college');
 const postSchema = new Schema({
   title: {
     type: String,
