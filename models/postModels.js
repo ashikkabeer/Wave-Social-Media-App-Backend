@@ -10,7 +10,6 @@ class PostModels {
   };
 
   static getAllPosts = async () => {
-    // return await Post.find({}).exec();
     return await Post.find({}).sort({createdAt: -1}).exec();
   };
 }

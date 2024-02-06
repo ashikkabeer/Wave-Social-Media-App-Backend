@@ -30,9 +30,6 @@ class CollegeModels {
       console.log(error);
     }
   };
-  static searchCollegeUsingName = async (searchKey) => {
-    return await College.fuzzySearch(searchKey);
-  };
 
   //college information
 }

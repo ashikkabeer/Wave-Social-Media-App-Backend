@@ -1,6 +1,5 @@
 require('dotenv').config();
-
-const { comparePassword, hashPassword } = require('../util/hashingHelper');
+const bcrypt = require('bcrypt');
 const { validateUser } = require('../util/dataValidation/validation');
 
 const collegeServices = require('./collegeServices');
@@ -26,7 +25,7 @@ class authServices {
 
   static loginService = async (req) => {
     const user = await UserModels.findUserByUsername(req.body.username)
-    await comparePassword(req.body.password, user.password);
+    await this.comparePassword(req.body.password, user.password);
     req.session.user = user;
     return req.session.user;
   };
@@ -35,8 +34,8 @@ class authServices {
     const collegeName = await collegeServices.getCollegeById(
       userData.collegeId
     );
-    const salt_rounds = process.env.SALT_ROUND;
-    const hashedPassword = await hashPassword(userData.password, 10);
+    const salt_rounds = parseInt(process.env.SALT_ROUND);
+    const hashedPassword = this.hashPassword(userData.password, 10);
     let users = {
       name: userData.name,
       username: userData.username,
@@ -70,11 +69,26 @@ class authServices {
       error.stack = 404;
       throw error;
     }
-    await collegeServices.updateColleges(userData.collegeId, user._id);
+    return await collegeServices.updateColleges(userData.collegeId, user._id);
   };
 
   static renderSignupService = async () => {
     const college = await collegeServices.getAllCollege();
+  };
+
+  static hashPassword = async (password, saltRounds) => {
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    return hashedPassword;
+  };
+  
+  static comparePassword = async (givenPassword, hashedPassword) => {
+    const passwordMatch = await bcrypt.compare(givenPassword, hashedPassword);
+    if (!passwordMatch) {
+      const error = new Error('Password Mismatch. Try again.');
+      error.status = 404;
+      throw error;
+    }
+    return passwordMatch;
   };
 }
 

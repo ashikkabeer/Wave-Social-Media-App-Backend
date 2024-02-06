@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const mongoose_fuzzy_searching = require('mongoose-fuzzy-searching');
 
 const collegeSchema = new Schema({
   Collegename: {
@@ -49,6 +48,5 @@ const collegeSchema = new Schema({
 });
 
 // Create the College model
-collegeSchema.plugin(mongoose_fuzzy_searching, { fields: ['firstName', 'lastName'] });
 const College = model('College', collegeSchema);
 module.exports = College;
