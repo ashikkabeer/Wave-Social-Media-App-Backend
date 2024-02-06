@@ -6,13 +6,12 @@ class authControls {
 
   static login = async (req, res) => {
     const response = await authServices.loginService(req);
-      return res.status(200).redirect('/post');
 
-    // if (response) {
-    //   return res.status(200).redirect('/post');
-    // } else {
-    //   throw new Error('Authentication Failed');
-    // }
+    if (response) {
+      return res.status(200).redirect('/post');
+    } else {
+      throw new Error('Authentication Failed');
+    }
   };
 
 
