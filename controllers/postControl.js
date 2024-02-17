@@ -14,9 +14,10 @@ class PostControls {
   static retrieveAll = async (req, res) => {
     const data = await PostServices.renderAllPostsService();
     console.log(data);
-    // const permission =true; check the role === administrator -> set permission true
-    return res.send(data)
-    // res.render('index', { data, loggedIn: true });
+    const permission =true; 
+    // check the role === administrator -> set permission true
+    // return res.send(data)
+    res.render('index', { data, loggedIn: true });
   };
 }
 
